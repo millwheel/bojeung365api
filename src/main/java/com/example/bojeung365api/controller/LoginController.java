@@ -20,46 +20,46 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
-
-    private final AuthenticationManager authenticationManager;
-    private final SecurityContextRepository securityContextRepository;
-    private final UserRepository userRepository;
-
-    // DTO
-    public record LoginRequest(String username, String password) {}
-    public record SessionUserResponse(Long id, String username, String nickname, String email) {
-        public static SessionUserResponse from(User u) {
-            return new SessionUserResponse(u.getId(), u.getUsername(), u.getNickname(), u.getEmail());
-        }
-    }
-
-    /** 로그인: JSON 바디 → 세션에 SecurityContext 저장 → 사용자 정보 반환 */
-    @PostMapping("/login")
-    public ResponseEntity<SessionUserResponse> login(@RequestBody LoginRequest req,
-                                                     HttpServletRequest httpRequest,
-                                                     HttpServletResponse httpResponse) {
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(req.username(), req.password());
-
-        Authentication authentication = authenticationManager.authenticate(authToken);
-
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(authentication);
-
-        // 세션에 SecurityContext 저장
-        securityContextRepository.saveContext(context, httpRequest, httpResponse);
-
-        // 사용자 요약 반환
-        User user = userRepository.findByUsername(authentication.getName()).orElseThrow();
-        return ResponseEntity.ok(SessionUserResponse.from(user));
-    }
-
-
-    /** 로그아웃: 세션 무효화 */
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-        return ResponseEntity.noContent().build(); // 204
-    }
+//
+//    private final AuthenticationManager authenticationManager;
+//    private final SecurityContextRepository securityContextRepository;
+//    private final UserRepository userRepository;
+//
+//    // DTO
+//    public record LoginRequest(String username, String password) {}
+//    public record SessionUserResponse(Long id, String username, String nickname, String email) {
+//        public static SessionUserResponse from(User u) {
+//            return new SessionUserResponse(u.getId(), u.getUsername(), u.getNickname(), u.getEmail());
+//        }
+//    }
+//
+//    /** 로그인: JSON 바디 → 세션에 SecurityContext 저장 → 사용자 정보 반환 */
+//    @PostMapping("/login")
+//    public ResponseEntity<SessionUserResponse> login(@RequestBody LoginRequest req,
+//                                                     HttpServletRequest httpRequest,
+//                                                     HttpServletResponse httpResponse) {
+//        UsernamePasswordAuthenticationToken authToken =
+//                new UsernamePasswordAuthenticationToken(req.username(), req.password());
+//
+//        Authentication authentication = authenticationManager.authenticate(authToken);
+//
+//        SecurityContext context = SecurityContextHolder.createEmptyContext();
+//        context.setAuthentication(authentication);
+//
+//        // 세션에 SecurityContext 저장
+//        securityContextRepository.saveContext(context, httpRequest, httpResponse);
+//
+//        // 사용자 요약 반환
+//        User user = userRepository.findByUsername(authentication.getName()).orElseThrow();
+//        return ResponseEntity.ok(SessionUserResponse.from(user));
+//    }
+//
+//
+//    /** 로그아웃: 세션 무효화 */
+//    @PostMapping("/logout")
+//    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+//        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+//        return ResponseEntity.noContent().build(); // 204
+//    }
 
 }
