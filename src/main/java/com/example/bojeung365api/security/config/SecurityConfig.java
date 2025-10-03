@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/posts/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/posts/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/posts/**").authenticated()
-                        .requestMatchers("/login", "/public/**", "/actuator/health", "/error").permitAll()
+                        .requestMatchers("/sign-up","/login", "/public/**", "/actuator/health", "/error").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )

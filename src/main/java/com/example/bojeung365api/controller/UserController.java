@@ -1,29 +1,32 @@
 package com.example.bojeung365api.controller;
 
 import com.example.bojeung365api.dto.ChangePasswordRequest;
-import com.example.bojeung365api.dto.SignUpRequest;
-import com.example.bojeung365api.service.UserService;
+import com.example.bojeung365api.dto.MeResponse;
+import com.example.bojeung365api.service.MeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private final MeService meService;
+
+    @GetMapping
+    public MeResponse getMe(Authentication authentication) {
+        return meService.getMe(authentication.getName());
+    }
 
     @PostMapping("/change-password")
     public void changePassword(
             @AuthenticationPrincipal UserDetails principal,
             @Valid @RequestBody ChangePasswordRequest request
     ) {
-        userService.changePassword(principal.getUsername(), request.currentPassword(), request.newPassword());
+        meService.changePassword(principal.getUsername(), request.currentPassword(), request.newPassword());
     }
 }
