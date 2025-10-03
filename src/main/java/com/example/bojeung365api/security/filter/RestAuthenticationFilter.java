@@ -22,10 +22,10 @@ public class RestAuthenticationFilter extends AbstractAuthenticationProcessingFi
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    protected RestAuthenticationFilter(String defaultFilterProcessesUrl) {
+    public RestAuthenticationFilter(String defaultFilterProcessesUrl) {
         super(
                 PathPatternRequestMatcher.withDefaults()
-                        .matcher(HttpMethod.POST, "/login")
+                        .matcher(HttpMethod.POST, defaultFilterProcessesUrl)
         );
     }
 
