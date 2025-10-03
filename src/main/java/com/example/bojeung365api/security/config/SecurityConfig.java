@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(restAuthenticationFilter(http), UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(restAuthenticationProvider)
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(restAuthenticationEntryPoint)
                                 .accessDeniedHandler(restAccessDeniedHandler)
@@ -60,8 +61,7 @@ public class SecurityConfig {
 
     private RestAuthenticationFilter restAuthenticationFilter(HttpSecurity http) {
         RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter(LOGIN_URL);
-        ProviderManager providerManager = new ProviderManager(restAuthenticationProvider);
-        restAuthenticationFilter.setAuthenticationManager(providerManager);
+        restAuthenticationFilter.setAuthenticationManager(new ProviderManager(restAuthenticationProvider));
         restAuthenticationFilter.setAuthenticationSuccessHandler(restAuthenticationSuccessHandler);
         restAuthenticationFilter.setAuthenticationFailureHandler(restAuthenticationFailureHandler);
         restAuthenticationFilter.setSecurityContextRepository(securityContextRepository(http));
