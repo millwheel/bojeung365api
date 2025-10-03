@@ -22,7 +22,6 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import static com.example.bojeung365api.security.AuthConstant.LOGIN_URL;
 
 @Configuration
-@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
