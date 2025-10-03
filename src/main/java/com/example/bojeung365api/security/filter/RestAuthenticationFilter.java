@@ -1,6 +1,7 @@
 package com.example.bojeung365api.security.filter;
 
 import com.example.bojeung365api.security.dto.LoginRequest;
+import com.example.bojeung365api.security.token.RestAuthenticationToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,10 +37,14 @@ public class RestAuthenticationFilter extends AbstractAuthenticationProcessingFi
         }
 
         LoginRequest loginRequest = objectMapper.readValue(request.getReader(), LoginRequest.class);
-        if (!StringUtils.hasText(loginRequest.username()) || !StringUtils.hasText(loginRequest.password())) {
+        String username = loginRequest.username();
+        String password = loginRequest.password();
+        if (!StringUtils.hasText(username) || !StringUtils.hasText(password)) {
             throw new AuthenticationServiceException("아이디 또는 패스워드가 비어있습니다.");
         }
 
-        return super.attemptAuthentication(request, response);
+        RestAuthenticationToken token = new RestAuthenticationToken(username, password);
+
+        return getAuthenticationManager().authenticate(token);
     }
 }
