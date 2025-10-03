@@ -1,6 +1,5 @@
 package com.example.bojeung365api.security.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,8 +14,6 @@ import java.io.IOException;
 
 @Component
 public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
