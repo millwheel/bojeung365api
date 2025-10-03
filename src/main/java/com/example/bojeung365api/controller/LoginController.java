@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Deprecated
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
@@ -54,12 +55,5 @@ public class LoginController {
 //        return ResponseEntity.ok(SessionUserResponse.from(user));
 //    }
 //
-//
-//    /** 로그아웃: 세션 무효화 */
-//    @PostMapping("/logout")
-//    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
-//        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-//        return ResponseEntity.noContent().build(); // 204
-//    }
 
 }
