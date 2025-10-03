@@ -26,7 +26,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
         HttpStatus status = HttpStatus.FORBIDDEN;
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        ErrorResponse body = ErrorResponse.of(status.value(), status.getReasonPhrase(), status.getReasonPhrase(), request.getRequestURI());
+        ErrorResponse body = ErrorResponse.of(status.value(), status.getReasonPhrase(), accessDeniedException.getLocalizedMessage(), request.getRequestURI());
         mapper.writeValue(response.getWriter(), body);
     }
 }

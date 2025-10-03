@@ -27,7 +27,7 @@ public class RestAuthenticationFailureHandler implements AuthenticationFailureHa
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        ErrorResponse body = ErrorResponse.of(status.value(), status.getReasonPhrase(), status.getReasonPhrase(), request.getRequestURI());
+        ErrorResponse body = ErrorResponse.of(status.value(), status.getReasonPhrase(), exception.getLocalizedMessage(), request.getRequestURI());
         mapper.writeValue(response.getWriter(), body);
     }
 }

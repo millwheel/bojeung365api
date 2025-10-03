@@ -49,11 +49,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(restAuthenticationFilter(http), UsernamePasswordAuthenticationFilter.class);
-//                .exceptionHandling(exception ->
-//                        exception.authenticationEntryPoint(restAuthenticationEntryPoint)
-//                                .accessDeniedHandler(restAccessDeniedHandler)
-//                );
+                .addFilterBefore(restAuthenticationFilter(http), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(restAuthenticationEntryPoint)
+                                .accessDeniedHandler(restAccessDeniedHandler)
+                );
 
         return http.build();
     }
