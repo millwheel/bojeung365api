@@ -1,6 +1,8 @@
 package com.example.bojeung365api.security.config;
 
 import com.example.bojeung365api.security.filter.RestAuthenticationFilter;
+import com.example.bojeung365api.security.handler.RestAccessDeniedHandler;
+import com.example.bojeung365api.security.handler.RestAuthenticationEntryPoint;
 import com.example.bojeung365api.security.handler.RestAuthenticationFailureHandler;
 import com.example.bojeung365api.security.handler.RestAuthenticationSuccessHandler;
 import com.example.bojeung365api.security.provider.RestAuthenticationProvider;
@@ -28,6 +30,8 @@ public class SecurityConfig {
     private final RestAuthenticationProvider restAuthenticationProvider;
     private final RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
     private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final RestAccessDeniedHandler restAccessDeniedHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,7 +50,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(restAuthenticationFilter(http), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(restAuthenticationFilter(http), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(restAuthenticationEntryPoint)
+                                .accessDeniedHandler(restAccessDeniedHandler)
+                );
 
         return http.build();
     }
