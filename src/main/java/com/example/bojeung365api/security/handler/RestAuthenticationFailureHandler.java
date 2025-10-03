@@ -16,6 +16,7 @@ import java.io.IOException;
 @Component
 public class RestAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
+    // NOTE 로그인 시도에서 발생하는 핸들러. 해당 핸들러를 지정하지 않으면 SimpleUrlAuthenticationFailureHandler 가 동작하는데, defaultUrl이 지정되어있으면 리다이렉트를 시킴 (REST API에 부적합)
     private final ObjectMapper mapper;
 
     public RestAuthenticationFailureHandler(ObjectMapper mapper) {

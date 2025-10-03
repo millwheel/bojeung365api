@@ -22,6 +22,7 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
         clearAuthenticationAttributes(request);
     }
 
+    // NOTE 혹시 모를 세션 잔여값 제거 (실패 케이스를 혹시 defaultFailureUrl 등에서 주입 할 수도 있으니)
     private void clearAuthenticationAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 

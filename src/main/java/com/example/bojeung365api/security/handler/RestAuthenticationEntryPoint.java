@@ -15,6 +15,7 @@ import java.io.IOException;
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    // NOTE 로그인 시도와는 무관한 핸들러. 비인증 요청이 인증이 필요한 리소스에 접근할 때 발생
     private final ObjectMapper mapper;
 
     public RestAuthenticationEntryPoint(ObjectMapper mapper) {
