@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "notice_post")
+@Table(name = "event_post")
 @PrimaryKeyJoinColumn(name = "id")
 public class EventPost extends Post {
 
