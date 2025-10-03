@@ -2,6 +2,7 @@ package com.example.bojeung365api.security.config;
 
 import com.example.bojeung365api.security.filter.RestAuthenticationFilter;
 import com.example.bojeung365api.security.provider.CustomAuthenticationProvider;
+import com.example.bojeung365api.security.provider.RestAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +23,12 @@ import static com.example.bojeung365api.security.AuthConstant.LOGIN_URL;
 public class SecurityConfig {
 
     private final CustomAuthenticationProvider customAuthenticationProvider;
+    private final RestAuthenticationProvider restAuthenticationProvider;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.authenticationProvider(restAuthenticationProvider);
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
         http
