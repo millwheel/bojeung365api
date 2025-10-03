@@ -2,7 +2,6 @@ package com.example.bojeung365api.security.provider;
 
 import com.example.bojeung365api.security.dto.CustomUserDetails;
 import com.example.bojeung365api.security.service.CustomUserDetailService;
-import com.example.bojeung365api.security.token.RestAuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -14,6 +14,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 import static com.example.bojeung365api.security.AuthConstant.LOGIN_URL;
 
@@ -43,18 +47,30 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(restAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(restAuthenticationFilter(http), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    private RestAuthenticationFilter restAuthenticationFilter() {
+    private RestAuthenticationFilter restAuthenticationFilter(HttpSecurity http) {
         RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter(LOGIN_URL);
         ProviderManager providerManager = new ProviderManager(restAuthenticationProvider);
         restAuthenticationFilter.setAuthenticationManager(providerManager);
         restAuthenticationFilter.setAuthenticationSuccessHandler(restAuthenticationSuccessHandler);
         restAuthenticationFilter.setAuthenticationFailureHandler(restAuthenticationFailureHandler);
+        restAuthenticationFilter.setSecurityContextRepository(securityContextRepository(http));
         return restAuthenticationFilter;
+    }
+
+    private SecurityContextRepository securityContextRepository(HttpSecurity http) {
+        SecurityContextRepository securityContextRepository = http.getSharedObject(SecurityContextRepository.class);
+        if (securityContextRepository == null) {
+            securityContextRepository = new DelegatingSecurityContextRepository(
+                    new RequestAttributeSecurityContextRepository(),
+                    new HttpSessionSecurityContextRepository()
+            );
+        }
+        return securityContextRepository;
     }
 
 }
