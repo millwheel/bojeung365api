@@ -1,14 +1,12 @@
 package com.example.bojeung365api.security.config;
 
 import com.example.bojeung365api.security.filter.RestAuthenticationFilter;
-import com.example.bojeung365api.security.provider.CustomAuthenticationProvider;
 import com.example.bojeung365api.security.provider.RestAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,21 +20,16 @@ import static com.example.bojeung365api.security.AuthConstant.LOGIN_URL;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomAuthenticationProvider customAuthenticationProvider;
     private final RestAuthenticationProvider restAuthenticationProvider;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(restAuthenticationProvider);
-        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
         http
                 .csrf(AbstractHttpConfigurer::disable) // TODO 나중에 활성화 판별
                 .cors(AbstractHttpConfigurer::disable) // TODO 나중에 활성화 판별
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
-                .authenticationProvider(customAuthenticationProvider)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/posts/**").authenticated()
@@ -46,16 +39,22 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(restAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
-                .authenticationManager(authenticationManager);
+                .addFilterBefore(restAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    private RestAuthenticationFilter restAuthenticationFilter(AuthenticationManager authenticationManager) {
+    private RestAuthenticationFilter restAuthenticationFilter() {
         RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter(LOGIN_URL);
-        restAuthenticationFilter.setAuthenticationManager(authenticationManager);
+        ProviderManager providerManager = new ProviderManager(restAuthenticationProvider);
+        restAuthenticationFilter.setAuthenticationManager(providerManager);
         return restAuthenticationFilter;
     }
+
+//    private AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+//        authenticationManagerBuilder.authenticationProvider(restAuthenticationProvider);
+//        return authenticationManagerBuilder.build();
+//    }
 
 }

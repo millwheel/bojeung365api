@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
@@ -43,7 +44,7 @@ public class RestAuthenticationFilter extends AbstractAuthenticationProcessingFi
             throw new AuthenticationServiceException("아이디 또는 패스워드가 비어있습니다.");
         }
 
-        RestAuthenticationToken token = new RestAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 
         return getAuthenticationManager().authenticate(token);
     }
