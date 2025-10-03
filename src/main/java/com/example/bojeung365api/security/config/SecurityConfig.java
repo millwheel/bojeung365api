@@ -1,6 +1,8 @@
 package com.example.bojeung365api.security.config;
 
 import com.example.bojeung365api.security.filter.RestAuthenticationFilter;
+import com.example.bojeung365api.security.handler.RestAuthenticationFailureHandler;
+import com.example.bojeung365api.security.handler.RestAuthenticationSuccessHandler;
 import com.example.bojeung365api.security.provider.RestAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,8 @@ import static com.example.bojeung365api.security.AuthConstant.LOGIN_URL;
 public class SecurityConfig {
 
     private final RestAuthenticationProvider restAuthenticationProvider;
+    private final RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
+    private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,13 +52,9 @@ public class SecurityConfig {
         RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter(LOGIN_URL);
         ProviderManager providerManager = new ProviderManager(restAuthenticationProvider);
         restAuthenticationFilter.setAuthenticationManager(providerManager);
+        restAuthenticationFilter.setAuthenticationSuccessHandler(restAuthenticationSuccessHandler);
+        restAuthenticationFilter.setAuthenticationFailureHandler(restAuthenticationFailureHandler);
         return restAuthenticationFilter;
     }
-
-//    private AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-//        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-//        authenticationManagerBuilder.authenticationProvider(restAuthenticationProvider);
-//        return authenticationManagerBuilder.build();
-//    }
 
 }

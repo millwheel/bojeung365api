@@ -9,9 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final ObjectMapper mapper = new ObjectMapper();
