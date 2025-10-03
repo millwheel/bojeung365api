@@ -2,10 +2,11 @@ package com.example.bojeung365api.entity.post;
 
 public enum PostType {
 
-    NOTICE,
-    EVENT,
-    REVIEW,
-    REPORT,
+    OFFICIAL,
     TETHER,
-    OFFICIAL
+    SCAM_REPORT,
+    REVIEW,
+    EVENT,
+    NOTICE,
+
 }
