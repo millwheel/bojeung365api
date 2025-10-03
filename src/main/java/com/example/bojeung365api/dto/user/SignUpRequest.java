@@ -1,4 +1,4 @@
-package com.example.bojeung365api.dto;
+package com.example.bojeung365api.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

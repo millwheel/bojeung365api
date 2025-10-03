@@ -1,6 +1,6 @@
 package com.example.bojeung365api.controller;
 
-import com.example.bojeung365api.dto.SignUpRequest;
+import com.example.bojeung365api.dto.user.SignUpRequest;
 import com.example.bojeung365api.service.SignUpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,6 @@
 package com.example.bojeung365api.security.provider;
 
+import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.security.dto.CustomUserDetails;
 import com.example.bojeung365api.security.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +25,12 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        CustomUserDetails userDetails = customUserDetailService.loadUserByUsername(username);
+        CustomUserDetails userDetails;
+        try {
+            userDetails = customUserDetailService.loadUserByUsername(username);
+        } catch (UserNotFoundException e) {
+            throw new UsernameNotFoundException(e.getMessage(), e);
+        }
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Invalid password");
         }

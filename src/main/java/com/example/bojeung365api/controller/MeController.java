@@ -1,7 +1,7 @@
 package com.example.bojeung365api.controller;
 
-import com.example.bojeung365api.dto.ChangePasswordRequest;
-import com.example.bojeung365api.dto.MeResponse;
+import com.example.bojeung365api.dto.user.ChangePasswordRequest;
+import com.example.bojeung365api.dto.user.MeResponse;
 import com.example.bojeung365api.service.MeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

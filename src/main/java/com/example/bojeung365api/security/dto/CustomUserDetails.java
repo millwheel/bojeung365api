@@ -1,6 +1,6 @@
 package com.example.bojeung365api.security.dto;
 
-import com.example.bojeung365api.entity.User;
+import com.example.bojeung365api.entity.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

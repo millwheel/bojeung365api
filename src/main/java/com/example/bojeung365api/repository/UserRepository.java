@@ -1,6 +1,6 @@
 package com.example.bojeung365api.repository;
 
-import com.example.bojeung365api.entity.User;
+import com.example.bojeung365api.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

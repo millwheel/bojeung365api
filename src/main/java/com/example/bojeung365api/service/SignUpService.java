@@ -1,7 +1,7 @@
 package com.example.bojeung365api.service;
 
-import com.example.bojeung365api.entity.User;
-import com.example.bojeung365api.entity.UserRole;
+import com.example.bojeung365api.entity.user.User;
+import com.example.bojeung365api.entity.user.UserRole;
 import com.example.bojeung365api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

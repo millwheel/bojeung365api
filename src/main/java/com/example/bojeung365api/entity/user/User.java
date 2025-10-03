@@ -1,4 +1,4 @@
-package com.example.bojeung365api.entity;
+package com.example.bojeung365api.entity.user;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,6 +1,6 @@
 package com.example.bojeung365api.security.service;
 
-import com.example.bojeung365api.entity.User;
+import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.repository.UserRepository;
 import com.example.bojeung365api.security.dto.CustomUserDetails;

@@ -1,7 +1,7 @@
-package com.example.bojeung365api.dto;
+package com.example.bojeung365api.dto.user;
 
-import com.example.bojeung365api.entity.User;
-import com.example.bojeung365api.entity.UserRole;
+import com.example.bojeung365api.entity.user.User;
+import com.example.bojeung365api.entity.user.UserRole;
 
 public record MeResponse(
         String username,

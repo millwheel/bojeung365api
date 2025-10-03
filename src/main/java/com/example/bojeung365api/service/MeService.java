@@ -1,8 +1,7 @@
 package com.example.bojeung365api.service;
 
-import com.example.bojeung365api.dto.MeResponse;
-import com.example.bojeung365api.entity.User;
-import com.example.bojeung365api.entity.UserRole;
+import com.example.bojeung365api.dto.user.MeResponse;
+import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
