@@ -1,5 +1,7 @@
 package com.example.bojeung365api.entity.post;
 
+import com.example.bojeung365api.dto.post.scam.ScamReportPostRequest;
+import com.example.bojeung365api.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,4 +27,22 @@ public class ScamReportPost extends Post {
     private String body;
 
     // TODO 이미지 연결 추가
+
+    public ScamReportPost(ScamReportPostRequest request, User author) {
+        super(request.getTitle(), author);
+        this.siteName = request.getSiteName();
+        this.siteUrl = request.getSiteUrl();
+        this.victimDate = request.getVictimDate();
+        this.victimAmount = request.getVictimAmount();
+        this.body = request.getBody();
+    }
+
+    public void update(ScamReportPostRequest request) {
+        super.update(request.getTitle());
+        this.siteName = request.getSiteName();
+        this.siteUrl = request.getSiteUrl();
+        this.victimDate = request.getVictimDate();
+        this.victimAmount = request.getVictimAmount();
+        this.body = request.getBody();
+    }
 }
