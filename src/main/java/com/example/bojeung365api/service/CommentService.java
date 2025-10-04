@@ -1,17 +1,22 @@
 package com.example.bojeung365api.service;
 
+import com.example.bojeung365api.dto.comment.CommentRequest;
 import com.example.bojeung365api.entity.comment.Comment;
+import com.example.bojeung365api.entity.post.Post;
+import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
-import com.example.bojeung365api.exception.custom.InvalidAuthorityException;
 import com.example.bojeung365api.repository.CommentRepository;
+import com.example.bojeung365api.util.AuthorityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -26,19 +31,24 @@ public class CommentService {
                 .orElseThrow(() -> new DataNotFoundException("comment"));
     }
 
-    public void createComment() {
-
+    @Transactional
+    public void createComment(Post post, User author, CommentRequest commentRequest) {
+        Comment comment = new Comment(post, author, commentRequest.body());
+        commentRepository.save(comment);
     }
 
-    public void updateComment(Long commentId) {
+    @Transactional
+    public void updateComment(Long commentId, CommentRequest commentRequest, Long requestorId) {
         Comment comment = getComment(commentId);
+        AuthorityValidator.validateMySelf(comment.getAuthor(), requestorId);
+        comment.update(commentRequest.body());
     }
 
+    @Transactional
     public void deleteComment(Long commentId, Long requestorId) {
         Comment comment = getComment(commentId);
-        if (!comment.getAuthor().getId().equals(requestorId)) {
-            throw new InvalidAuthorityException();
-        }
+        // TODO 관리자는 열외처리할 것
+        AuthorityValidator.validateMySelf(comment.getAuthor(), requestorId);
         commentRepository.delete(comment);
     }
 
