@@ -12,5 +12,6 @@ public class ReviewPostListDto implements PostListDto {
     private Long viewCount;
     private LocalDateTime createdAt;
     private String authorNickname;
+    private String siteName;
 }
 

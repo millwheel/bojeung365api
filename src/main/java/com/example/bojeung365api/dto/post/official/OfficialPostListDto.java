@@ -11,6 +11,6 @@ public class OfficialPostListDto implements PostListDto {
     private String title;
     private Long viewCount;
     private LocalDateTime createdAt;
-    private String thumbnailUrl;
     private String authorNickname;
+    private String thumbnailUrl;
 }

@@ -29,8 +29,8 @@ public class OfficialPostRepositoryImpl implements OfficialPostRepositoryCustom 
                         officialPost.title,
                         officialPost.viewCount,
                         officialPost.createdAt,
-                        officialPost.thumbnailUrl,
-                        user.nickname
+                        user.nickname,
+                        officialPost.thumbnailUrl
                 ))
                 .from(officialPost)
                 .join(officialPost.author, user)
