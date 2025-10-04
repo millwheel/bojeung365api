@@ -11,6 +11,6 @@ public class NoticePostListDto implements PostListDto {
     private String title;
     private Long viewCount;
     private LocalDateTime createdAt;
-    private String thumbnailUrl;
     private String authorNickname;
+    private Integer commentCount;
 }

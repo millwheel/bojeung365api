@@ -11,6 +11,7 @@ public class TetherPostListDto implements PostListDto {
     private String title;
     private Long viewCount;
     private LocalDateTime createdAt;
-    private String thumbnailUrl;
     private String authorNickname;
+    private Integer commentCount;
+    private String thumbnailUrl;
 }
