@@ -1,6 +1,7 @@
 package com.example.bojeung365api.entity.post;
 
 import com.example.bojeung365api.dto.post.official.OfficialPostCreateRequest;
+import com.example.bojeung365api.dto.post.official.OfficialPostUpdateRequest;
 import com.example.bojeung365api.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -21,6 +22,12 @@ public class OfficialPost extends Post {
 
     public OfficialPost(OfficialPostCreateRequest request, User author) {
         super(request.title(), author);
+        this.richBody = request.richBody();
+        this.thumbnailUrl = request.thumbnailUrl();
+    }
+
+    public void update(OfficialPostUpdateRequest request) {
+        super.update(request.title());
         this.richBody = request.richBody();
         this.thumbnailUrl = request.thumbnailUrl();
     }

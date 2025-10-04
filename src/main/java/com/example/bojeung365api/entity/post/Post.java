@@ -28,9 +28,13 @@ public abstract class Post extends BaseTimeEntity {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
-    public Post(String title, User author) {
+    protected Post(String title, User author) {
         this.title = title;
         this.author = author;
+    }
+
+    protected void update(String title) {
+        this.title = title;
     }
 
     public void increaseViewCount() {

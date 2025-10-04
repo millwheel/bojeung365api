@@ -3,6 +3,7 @@ package com.example.bojeung365api.service;
 import com.example.bojeung365api.dto.post.official.OfficialPostCreateRequest;
 import com.example.bojeung365api.dto.post.official.OfficialPostListDto;
 import com.example.bojeung365api.dto.post.official.OfficialPostResponse;
+import com.example.bojeung365api.dto.post.official.OfficialPostUpdateRequest;
 import com.example.bojeung365api.entity.post.OfficialPost;
 import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
@@ -42,10 +43,10 @@ public class OfficialPostService {
         officialPostRepository.save(officialPost);
     }
 
-    public void updatePage(Long postId) {
+    public void updatePage(Long postId, OfficialPostUpdateRequest request) {
         OfficialPost officialPost = officialPostRepository.findById(postId)
                 .orElseThrow(() -> new DataNotFoundException("official post"));
-        // TODO update 로직
+        officialPost.update(request);
     }
 
     public void deletePage(Long postId) {
