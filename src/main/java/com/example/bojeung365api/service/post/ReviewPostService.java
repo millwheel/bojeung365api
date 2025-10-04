@@ -1,4 +1,4 @@
-package com.example.bojeung365api.service;
+package com.example.bojeung365api.service.post;
 
 import com.example.bojeung365api.dto.comment.CommentResponse;
 import com.example.bojeung365api.dto.post.review.ReviewPostListDto;
@@ -9,6 +9,7 @@ import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
 import com.example.bojeung365api.repository.review.ReviewPostRepository;
 import com.example.bojeung365api.repository.UserRepository;
+import com.example.bojeung365api.service.CommentService;
 import com.example.bojeung365api.util.AuthorityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

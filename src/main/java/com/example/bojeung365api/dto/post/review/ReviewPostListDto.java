@@ -1,11 +1,16 @@
 package com.example.bojeung365api.dto.post.review;
 
+import com.example.bojeung365api.dto.post.PostResponseDto;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
-public record ReviewPostListDto(
-        Long id,
-        String title,
-        Long viewCount,
-        LocalDateTime createdAt,
-        String authorNickname
-) {}
+@Data
+public class ReviewPostListDto implements PostResponseDto {
+    private Long id;
+    private String title;
+    private Long viewCount;
+    private LocalDateTime createdAt;
+    private String authorNickname;
+}
+

@@ -1,8 +1,10 @@
 package com.example.bojeung365api.dto.post.official;
 
-public record OfficialPostRequest(
-        String title,
-        String richBody,
-        String thumbnailUrl
-) {
+import lombok.Data;
+
+@Data
+public class OfficialPostRequest {
+    private String title;
+    private String richBody;
+    private String thumbnailUrl;
 }

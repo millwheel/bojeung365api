@@ -1,12 +1,16 @@
 package com.example.bojeung365api.dto.post.official;
 
+import com.example.bojeung365api.dto.post.PostListDto;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
-public record OfficialPostListDto(
-        Long id,
-        String title,
-        Long viewCount,
-        LocalDateTime createdAt,
-        String thumbnailUrl,
-        String authorNickname
-) {}
+@Data
+public class OfficialPostListDto implements PostListDto {
+    private Long id;
+    private String title;
+    private Long viewCount;
+    private LocalDateTime createdAt;
+    private String thumbnailUrl;
+    private String authorNickname;
+}
