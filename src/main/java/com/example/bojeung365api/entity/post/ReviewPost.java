@@ -1,7 +1,10 @@
 package com.example.bojeung365api.entity.post;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -9,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "review_post")
 @PrimaryKeyJoinColumn(name = "id")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewPost extends Post {
 
     private String siteName;

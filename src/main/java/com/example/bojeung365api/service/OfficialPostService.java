@@ -4,7 +4,9 @@ import com.example.bojeung365api.dto.post.official.OfficialPostCreateRequest;
 import com.example.bojeung365api.dto.post.official.OfficialPostListDto;
 import com.example.bojeung365api.dto.post.official.OfficialPostResponse;
 import com.example.bojeung365api.entity.post.OfficialPost;
+import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
+import com.example.bojeung365api.repository.UserRepository;
 import com.example.bojeung365api.repository.official.OfficialPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OfficialPostService {
 
     private final OfficialPostRepository officialPostRepository;
+    private final UserRepository userRepository;
 
     public Page<OfficialPostListDto> getPages(int page) {
         Pageable pageable = PageRequest.of(page, 20);
@@ -33,15 +36,23 @@ public class OfficialPostService {
     }
 
     public void createPage(OfficialPostCreateRequest request) {
-
+        User author = userRepository.findById(request.authorId())
+                .orElseThrow(() -> new DataNotFoundException("user"));
+        OfficialPost officialPost = new OfficialPost(request, author);
+        officialPostRepository.save(officialPost);
     }
 
-    public void updatePage() {
-
+    public void updatePage(Long postId) {
+        OfficialPost officialPost = officialPostRepository.findById(postId)
+                .orElseThrow(() -> new DataNotFoundException("official post"));
+        // TODO update 로직
     }
 
-    public void deletePage() {
-
+    public void deletePage(Long postId) {
+        OfficialPost officialPost = officialPostRepository.findById(postId)
+                .orElseThrow(() -> new DataNotFoundException("official post"));
+        // TODO cascade comment delete
+        officialPostRepository.delete(officialPost);
     }
 
 }
