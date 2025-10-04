@@ -1,5 +1,7 @@
 package com.example.bojeung365api.entity.post;
 
+import com.example.bojeung365api.dto.post.review.ReviewPostRequest;
+import com.example.bojeung365api.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,5 +36,35 @@ public class ReviewPost extends Post {
     @Column(columnDefinition = "text")
     private String body;
 
-    // TODO 이미지 연결 추가
+    // TODO 이미지 필드 추가
+    
+    public ReviewPost(ReviewPostRequest request, User author) {
+        super(request.getTitle(), author);
+        this.siteName = request.getSiteName();
+        this.siteUrl = request.getSiteUrl();
+        this.bettingDate = request.getBettingDate();
+        this.bettingAmount = request.getBettingAmount();
+        this.dividend = request.getDividend();
+        this.winAmount = request.getWinAmount();
+        this.exchangeSpeed = request.getExchangeSpeed();
+        this.dividendRating = request.getDividendRating();
+        this.eventRating = request.getEventRating();
+        this.reliability = request.getReliability();
+        this.body = request.getBody();
+    }
+
+    public void update(ReviewPostRequest request) {
+        super.update(request.getTitle());
+        this.siteName = request.getSiteName();
+        this.siteUrl = request.getSiteUrl();
+        this.bettingDate = request.getBettingDate();
+        this.bettingAmount = request.getBettingAmount();
+        this.dividend = request.getDividend();
+        this.winAmount = request.getWinAmount();
+        this.exchangeSpeed = request.getExchangeSpeed();
+        this.dividendRating = request.getDividendRating();
+        this.eventRating = request.getEventRating();
+        this.reliability = request.getReliability();
+        this.body = request.getBody();
+    }
 }

@@ -1,10 +1,9 @@
 package com.example.bojeung365api.service;
 
 import com.example.bojeung365api.dto.comment.CommentResponse;
-import com.example.bojeung365api.dto.post.official.OfficialPostRequest;
-import com.example.bojeung365api.dto.post.official.OfficialPostListDto;
-import com.example.bojeung365api.dto.post.official.OfficialPostResponse;
-import com.example.bojeung365api.entity.post.OfficialPost;
+import com.example.bojeung365api.dto.post.review.ReviewPostListDto;
+import com.example.bojeung365api.dto.post.review.ReviewPostRequest;
+import com.example.bojeung365api.dto.post.review.ReviewPostResponse;
 import com.example.bojeung365api.entity.post.ReviewPost;
 import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
@@ -29,16 +28,16 @@ public class ReviewPostService {
     private final UserRepository userRepository;
     private final CommentService commentService;
 
-    public Page<OfficialPostListDto> getBoard(int page) {
+    public Page<ReviewPostListDto> getBoard(int page) {
         Pageable pageable = PageRequest.of(page, 20);
         return reviewPostRepository.findList(pageable);
     }
 
-    public OfficialPostResponse getPostResponse(Long postId) {
+    public ReviewPostResponse getPostResponse(Long postId) {
         ReviewPost reviewPost = getPost(postId);
         reviewPost.increaseViewCount();
         List<CommentResponse> commentResponses = commentService.getCommentResponses(postId);
-        return new OfficialPostResponse(reviewPost, commentResponses);
+        return new ReviewPostResponse(reviewPost, commentResponses);
     }
 
     private ReviewPost getPost(Long postId) {
@@ -47,15 +46,15 @@ public class ReviewPostService {
     }
 
     @Transactional
-    public void createPage(OfficialPostRequest request) {
-        User author = userRepository.findById(request.authorId())
+    public void createPage(ReviewPostRequest request, Long requestorId) {
+        User author = userRepository.findById(requestorId)
                 .orElseThrow(() -> new DataNotFoundException("user"));
-        OfficialPost officialPost = new OfficialPost(request, author);
-        reviewPostRepository.save(officialPost);
+        ReviewPost reviewPost = new ReviewPost(request, author);
+        reviewPostRepository.save(reviewPost);
     }
 
     @Transactional
-    public void updatePage(Long postId, OfficialPostUpdateRequest request) {
+    public void updatePage(Long postId, ReviewPostRequest request) {
         ReviewPost reviewPost = getPost(postId);
         reviewPost.update(request);
     }
