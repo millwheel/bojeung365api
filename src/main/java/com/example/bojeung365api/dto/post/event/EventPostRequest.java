@@ -6,5 +6,4 @@ import lombok.Data;
 public class EventPostRequest {
     private String title;
     private String richBody;
-    private String thumbnailUrl;
 }

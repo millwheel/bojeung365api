@@ -1,7 +1,6 @@
 package com.example.bojeung365api.dto.post.review;
 
 import com.example.bojeung365api.dto.post.PostListDto;
-import com.example.bojeung365api.dto.post.PostResponseDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;

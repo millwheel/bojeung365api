@@ -1,7 +1,6 @@
 package com.example.bojeung365api.dto.post.review;
 
 import com.example.bojeung365api.dto.comment.CommentResponse;
-import com.example.bojeung365api.dto.post.PostListDto;
 import com.example.bojeung365api.dto.post.PostResponseDto;
 import com.example.bojeung365api.entity.post.ReviewPost;
 import lombok.Data;

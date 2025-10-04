@@ -20,14 +20,14 @@ public class OfficialPost extends Post {
     private String thumbnailUrl;
 
     public OfficialPost(OfficialPostRequest request, User author) {
-        super(request.title(), author);
-        this.richBody = request.richBody();
-        this.thumbnailUrl = request.thumbnailUrl();
+        super(request.getTitle(), author);
+        this.richBody = request.getRichBody();
+        this.thumbnailUrl = request.getThumbnailUrl();
     }
 
     public void update(OfficialPostRequest request) {
-        super.update(request.title());
-        this.richBody = request.richBody();
-        this.thumbnailUrl = request.thumbnailUrl();
+        super.update(request.getTitle());
+        this.richBody = request.getRichBody();
+        this.thumbnailUrl = request.getThumbnailUrl();
     }
 }

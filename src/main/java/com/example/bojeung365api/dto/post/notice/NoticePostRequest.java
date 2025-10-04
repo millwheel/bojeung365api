@@ -6,5 +6,4 @@ import lombok.Data;
 public class NoticePostRequest {
     private String title;
     private String richBody;
-    private String thumbnailUrl;
 }

@@ -5,6 +5,8 @@ import com.example.bojeung365api.dto.post.PostResponseDto;
 import com.example.bojeung365api.entity.post.ScamReportPost;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,8 +19,11 @@ public class ScamReportPostResponse implements PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
-    private String richBody;
-    private String thumbnailUrl;
+    private String siteName;
+    private String siteUrl;
+    private LocalDate victimDate;
+    private BigDecimal victimAmount;
+    private String body;
 
     public ScamReportPostResponse(ScamReportPost scamReportPost, List<CommentResponse> commentResponses) {
         this.id = scamReportPost.getId();
@@ -28,7 +33,10 @@ public class ScamReportPostResponse implements PostResponseDto {
         this.createdAt = scamReportPost.getCreatedAt();
         this.updatedAt = scamReportPost.getUpdatedAt();
         this.commentResponses = commentResponses;
-        this.richBody = scamReportPost.getRichBody();
-        this.thumbnailUrl = scamReportPost.getThumbnailUrl();
+        this.siteName = scamReportPost.getSiteName();
+        this.siteUrl = scamReportPost.getSiteUrl();
+        this.victimDate = scamReportPost.getVictimDate();
+        this.victimAmount = scamReportPost.getVictimAmount();
+        this.body = scamReportPost.getBody();
     }
 }

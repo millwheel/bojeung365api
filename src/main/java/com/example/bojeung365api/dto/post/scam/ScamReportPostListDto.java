@@ -11,6 +11,5 @@ public class ScamReportPostListDto implements PostListDto {
     private String title;
     private Long viewCount;
     private LocalDateTime createdAt;
-    private String thumbnailUrl;
     private String authorNickname;
 }

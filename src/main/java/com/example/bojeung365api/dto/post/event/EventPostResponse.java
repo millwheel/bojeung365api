@@ -18,7 +18,6 @@ public class EventPostResponse implements PostResponseDto {
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
     private String richBody;
-    private String thumbnailUrl;
 
     public EventPostResponse(EventPost eventPost, List<CommentResponse> commentResponses) {
         this.id = eventPost.getId();
@@ -29,6 +28,5 @@ public class EventPostResponse implements PostResponseDto {
         this.updatedAt = eventPost.getUpdatedAt();
         this.commentResponses = commentResponses;
         this.richBody = eventPost.getRichBody();
-        this.thumbnailUrl = eventPost.getThumbnailUrl();
     }
 }
