@@ -20,8 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public abstract class AbstractPostService<
         T extends Post,
-        CreateReq,
-        UpdateReq,
+        CreateRequest,
+        UpdateRequest,
         L extends PostListDto,
         R extends PostResponseDto
         > {
@@ -30,19 +30,19 @@ public abstract class AbstractPostService<
     protected final CommentService commentService;
     protected abstract JpaRepository<T, Long> repository();
 
-    public abstract Page<L> getBoard(int page);
-
     protected abstract R toResponse(T post, List<CommentResponse> comments);
 
-    protected abstract T createEntity(CreateReq req, User author);
-    protected abstract void updateEntity(T post, UpdateReq req);
+    protected abstract T createEntity(CreateRequest request, User author);
+    protected abstract void updateEntity(T post, UpdateRequest request);
+    protected abstract String notFoundTarget();
 
     protected T getPostOrThrow(Long id) {
         return repository().findById(id)
-                .orElseThrow(() -> new DataNotFoundException("post"));
+                .orElseThrow(() -> new DataNotFoundException(notFoundTarget()));
     }
 
-    @Transactional
+    public abstract Page<L> getBoard(int page);
+
     public R getPostResponse(Long id) {
         T post = getPostOrThrow(id);
         post.increaseViewCount();
@@ -51,16 +51,16 @@ public abstract class AbstractPostService<
     }
 
     @Transactional
-    public void createPage(CreateReq req, Long requestorId) {
+    public void createPage(CreateRequest request, Long requestorId) {
         User author = userRepository.findById(requestorId)
                 .orElseThrow(() -> new DataNotFoundException("user"));
-        repository().save(createEntity(req, author));
+        repository().save(createEntity(request, author));
     }
 
     @Transactional
-    public void updatePage(Long id, UpdateReq req) {
+    public void updatePage(Long id, UpdateRequest request) {
         T post = getPostOrThrow(id);
-        updateEntity(post, req);
+        updateEntity(post, request);
     }
 
     @Transactional

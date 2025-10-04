@@ -2,6 +2,7 @@ package com.example.bojeung365api.dto.post.review;
 
 import com.example.bojeung365api.dto.comment.CommentResponse;
 import com.example.bojeung365api.dto.post.PostListDto;
+import com.example.bojeung365api.dto.post.PostResponseDto;
 import com.example.bojeung365api.entity.post.ReviewPost;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class ReviewPostResponse implements PostListDto {
+public class ReviewPostResponse implements PostResponseDto {
     private Long id;
     private String title;
     private Long viewCount;

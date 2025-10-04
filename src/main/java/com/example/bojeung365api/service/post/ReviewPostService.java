@@ -6,66 +6,67 @@ import com.example.bojeung365api.dto.post.review.ReviewPostRequest;
 import com.example.bojeung365api.dto.post.review.ReviewPostResponse;
 import com.example.bojeung365api.entity.post.ReviewPost;
 import com.example.bojeung365api.entity.user.User;
-import com.example.bojeung365api.exception.custom.DataNotFoundException;
 import com.example.bojeung365api.repository.review.ReviewPostRepository;
 import com.example.bojeung365api.repository.UserRepository;
 import com.example.bojeung365api.service.CommentService;
-import com.example.bojeung365api.util.AuthorityValidator;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ReviewPostService {
+public class ReviewPostService extends AbstractPostService<
+        ReviewPost,
+        ReviewPostRequest,
+        ReviewPostRequest,
+        ReviewPostListDto,
+        ReviewPostResponse
+        > {
 
     private final ReviewPostRepository reviewPostRepository;
-    private final UserRepository userRepository;
-    private final CommentService commentService;
 
+    public ReviewPostService(
+            UserRepository userRepository,
+            CommentService commentService,
+            ReviewPostRepository reviewPostRepository
+    ) {
+        super(userRepository, commentService);
+        this.reviewPostRepository = reviewPostRepository;
+    }
+
+    @Override
+    protected String notFoundTarget() {
+        return "reviewPost";
+    }
+
+    @Override
+    protected JpaRepository<ReviewPost, Long> repository() {
+        return reviewPostRepository;
+    }
+
+    @Override
     public Page<ReviewPostListDto> getBoard(int page) {
         Pageable pageable = PageRequest.of(page, 20);
         return reviewPostRepository.findList(pageable);
     }
 
-    public ReviewPostResponse getPostResponse(Long postId) {
-        ReviewPost reviewPost = getPost(postId);
-        reviewPost.increaseViewCount();
-        List<CommentResponse> commentResponses = commentService.getCommentResponses(postId);
+    @Override
+    protected ReviewPostResponse toResponse(ReviewPost reviewPost, List<CommentResponse> commentResponses) {
         return new ReviewPostResponse(reviewPost, commentResponses);
     }
 
-    private ReviewPost getPost(Long postId) {
-        return reviewPostRepository.findById(postId)
-                .orElseThrow(() -> new DataNotFoundException("official post"));
+    @Override
+    protected ReviewPost createEntity(ReviewPostRequest request, User author) {
+        return new ReviewPost(request, author);
     }
 
-    @Transactional
-    public void createPage(ReviewPostRequest request, Long requestorId) {
-        User author = userRepository.findById(requestorId)
-                .orElseThrow(() -> new DataNotFoundException("user"));
-        ReviewPost reviewPost = new ReviewPost(request, author);
-        reviewPostRepository.save(reviewPost);
-    }
-
-    @Transactional
-    public void updatePage(Long postId, ReviewPostRequest request) {
-        ReviewPost reviewPost = getPost(postId);
+    @Override
+    protected void updateEntity(ReviewPost reviewPost, ReviewPostRequest request) {
         reviewPost.update(request);
-    }
-
-    @Transactional
-    public void deletePage(Long postId, Long requestorId) {
-        ReviewPost reviewPost = getPost(postId);
-        // TODO 관리자는 열외처리할 것
-        AuthorityValidator.validateMySelf(reviewPost.getAuthor(), requestorId);
-        commentService.deleteCommentsCascade(postId);
-        reviewPostRepository.delete(reviewPost);
     }
 }

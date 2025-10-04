@@ -20,13 +20,24 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class OfficialPostService extends AbstractPostService<OfficialPost, OfficialPostRequest, OfficialPostRequest, OfficialPostListDto, OfficialPostResponse> {
+public class OfficialPostService extends AbstractPostService<
+        OfficialPost,
+        OfficialPostRequest,
+        OfficialPostRequest,
+        OfficialPostListDto,
+        OfficialPostResponse
+        > {
 
     private final OfficialPostRepository officialPostRepository;
 
     public OfficialPostService(UserRepository userRepository, CommentService commentService, OfficialPostRepository officialPostRepository) {
         super(userRepository, commentService);
         this.officialPostRepository = officialPostRepository;
+    }
+
+    @Override
+    protected String notFoundTarget() {
+        return "officialPost";
     }
 
     @Override
@@ -54,4 +65,5 @@ public class OfficialPostService extends AbstractPostService<OfficialPost, Offic
     protected void updateEntity(OfficialPost officialPost, OfficialPostRequest request) {
         officialPost.update(request);
     }
+
 }
