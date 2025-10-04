@@ -1,6 +1,7 @@
 package com.example.bojeung365api.exception.handler;
 
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
+import com.example.bojeung365api.exception.custom.InvalidAuthorityException;
 import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.exception.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,13 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ErrorResponse handleNotFoundException(HttpServletRequest req, UserNotFoundException ex) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
+        return ErrorResponse.of(status.value(), status.getReasonPhrase(), ex.getLocalizedMessage(), req.getRequestURI());
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(InvalidAuthorityException.class)
+    public ErrorResponse handleInvalidAuthorityException(HttpServletRequest req, InvalidAuthorityException ex) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
         return ErrorResponse.of(status.value(), status.getReasonPhrase(), ex.getLocalizedMessage(), req.getRequestURI());
     }
 

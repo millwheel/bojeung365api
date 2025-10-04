@@ -1,5 +1,6 @@
-package com.example.bojeung365api.entity;
+package com.example.bojeung365api.entity.comment;
 
+import com.example.bojeung365api.entity.BaseTimeEntity;
 import com.example.bojeung365api.entity.post.Post;
 import com.example.bojeung365api.entity.user.User;
 import lombok.Getter;
