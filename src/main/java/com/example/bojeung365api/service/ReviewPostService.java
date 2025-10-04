@@ -7,7 +7,7 @@ import com.example.bojeung365api.dto.post.review.ReviewPostResponse;
 import com.example.bojeung365api.entity.post.ReviewPost;
 import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
-import com.example.bojeung365api.repository.ReviewPostRepository;
+import com.example.bojeung365api.repository.review.ReviewPostRepository;
 import com.example.bojeung365api.repository.UserRepository;
 import com.example.bojeung365api.util.AuthorityValidator;
 import lombok.RequiredArgsConstructor;
