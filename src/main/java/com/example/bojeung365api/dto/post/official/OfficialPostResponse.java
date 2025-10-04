@@ -11,11 +11,12 @@ public record OfficialPostResponse(
         String title,
         Long viewCount,
         String authorNickname,
-        String richBody,
-        String thumbnailUrl,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        List<CommentResponse> commentResponses
+        List<CommentResponse> commentResponses,
+        String richBody,
+        String thumbnailUrl
+
 ) {
     public OfficialPostResponse(OfficialPost officialPost, List<CommentResponse> commentResponses) {
         this(
@@ -23,11 +24,11 @@ public record OfficialPostResponse(
                 officialPost.getTitle(),
                 officialPost.getViewCount(),
                 officialPost.getAuthor().getNickname(),
-                officialPost.getRichBody(),
-                officialPost.getThumbnailUrl(),
                 officialPost.getCreatedAt(),
                 officialPost.getUpdatedAt(),
-                commentResponses
+                commentResponses,
+                officialPost.getRichBody(),
+                officialPost.getThumbnailUrl()
         );
     }
 }
