@@ -1,7 +1,9 @@
 package com.example.bojeung365api.service;
 
-import com.example.bojeung365api.dto.post.OfficialPostCreateRequest;
-import com.example.bojeung365api.dto.post.OfficialPostListDto;
+import com.example.bojeung365api.dto.post.official.OfficialPostCreateRequest;
+import com.example.bojeung365api.dto.post.official.OfficialPostListDto;
+import com.example.bojeung365api.dto.post.official.OfficialPostResponse;
+import com.example.bojeung365api.entity.post.OfficialPost;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
 import com.example.bojeung365api.repository.official.OfficialPostRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,11 @@ public class OfficialPostService {
         return officialPostRepository.findList(pageable);
     }
 
-    public void getPage(Long postId) {
-        officialPostRepository.findById(postId)
+    public OfficialPostResponse getPage(Long postId) {
+        OfficialPost officialPost = officialPostRepository.findById(postId)
                 .orElseThrow(() -> new DataNotFoundException("official post"));
+        officialPost.increaseViewCount();
+        return new OfficialPostResponse(officialPost);
     }
 
     public void createPage(OfficialPostCreateRequest request) {

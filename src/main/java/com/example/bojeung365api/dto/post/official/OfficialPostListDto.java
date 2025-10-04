@@ -1,4 +1,4 @@
-package com.example.bojeung365api.dto.post;
+package com.example.bojeung365api.dto.post.official;
 
 import java.time.LocalDateTime;
 

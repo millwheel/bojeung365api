@@ -1,10 +1,8 @@
 package com.example.bojeung365api.repository.official;
 
-import com.example.bojeung365api.dto.post.OfficialPostListDto;
+import com.example.bojeung365api.dto.post.official.OfficialPostListDto;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
