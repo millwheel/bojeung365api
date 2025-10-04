@@ -49,6 +49,11 @@ public class CommentService {
     }
 
     @Transactional
+    public void deleteCommentsCascade(Long postId) {
+        commentRepository.deleteByPostId(postId);
+    }
+
+    @Transactional
     public void deleteComment(Long commentId, Long requestorId) {
         Comment comment = getComment(commentId);
         // TODO 관리자는 열외처리할 것
