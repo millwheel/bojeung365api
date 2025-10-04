@@ -1,9 +1,11 @@
 package com.example.bojeung365api.service;
 
+import com.example.bojeung365api.dto.comment.CommentResponse;
 import com.example.bojeung365api.dto.post.official.OfficialPostCreateRequest;
 import com.example.bojeung365api.dto.post.official.OfficialPostListDto;
 import com.example.bojeung365api.dto.post.official.OfficialPostResponse;
 import com.example.bojeung365api.dto.post.official.OfficialPostUpdateRequest;
+import com.example.bojeung365api.entity.comment.Comment;
 import com.example.bojeung365api.entity.post.OfficialPost;
 import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
@@ -16,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -23,6 +27,7 @@ public class OfficialPostService {
 
     private final OfficialPostRepository officialPostRepository;
     private final UserRepository userRepository;
+    private final CommentService commentService;
 
     public Page<OfficialPostListDto> getPages(int page) {
         Pageable pageable = PageRequest.of(page, 20);
@@ -33,7 +38,8 @@ public class OfficialPostService {
         OfficialPost officialPost = officialPostRepository.findById(postId)
                 .orElseThrow(() -> new DataNotFoundException("official post"));
         officialPost.increaseViewCount();
-        return new OfficialPostResponse(officialPost);
+        List<CommentResponse> commentResponses = commentService.getCommentResponses(postId);
+        return new OfficialPostResponse(officialPost, commentResponses);
     }
 
     public void createPage(OfficialPostCreateRequest request) {

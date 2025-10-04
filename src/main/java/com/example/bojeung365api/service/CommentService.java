@@ -1,6 +1,7 @@
 package com.example.bojeung365api.service;
 
 import com.example.bojeung365api.dto.comment.CommentRequest;
+import com.example.bojeung365api.dto.comment.CommentResponse;
 import com.example.bojeung365api.entity.comment.Comment;
 import com.example.bojeung365api.entity.post.Post;
 import com.example.bojeung365api.entity.user.User;
@@ -21,12 +22,15 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    public List<Comment> getComments(Long postId) {
+    public List<CommentResponse> getCommentResponses(Long postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
-        return comments.stream().sorted(Comparator.comparing(Comment::getCreatedAt)).toList();
+        return comments.stream()
+                .sorted(Comparator.comparing(Comment::getCreatedAt))
+                .map(CommentResponse::new)
+                .toList();
     }
 
-    public Comment getComment(Long commentId) {
+    private Comment getComment(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new DataNotFoundException("comment"));
     }
