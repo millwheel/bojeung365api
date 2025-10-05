@@ -46,7 +46,7 @@ public class NoticePostService extends AbstractPostService<
     }
 
     @Override
-    public Page<NoticePostListDto> getBoard(int page) {
+    public Page<NoticePostListDto> getPostListDtos(int page) {
         Pageable pageable = PageRequest.of(page, 20);
         return noticePostRepository.findList(pageable);
     }

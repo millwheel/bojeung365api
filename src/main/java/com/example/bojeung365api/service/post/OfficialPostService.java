@@ -46,7 +46,7 @@ public class OfficialPostService extends AbstractPostService<
     }
 
     @Override
-    public Page<OfficialPostListDto> getBoard(int page) {
+    public Page<OfficialPostListDto> getPostListDtos(int page) {
         Pageable pageable = PageRequest.of(page, 20);
         return officialPostRepository.findList(pageable);
     }

@@ -41,7 +41,7 @@ public abstract class AbstractPostService<
                 .orElseThrow(() -> new DataNotFoundException(notFoundTarget()));
     }
 
-    public abstract Page<L> getBoard(int page);
+    public abstract Page<L> getPostListDtos(int page);
 
     public R getPostResponse(Long id) {
         T post = getPostOrThrow(id);
@@ -58,8 +58,9 @@ public abstract class AbstractPostService<
     }
 
     @Transactional
-    public void updatePage(Long id, UpdateRequest request) {
+    public void updatePage(Long id, UpdateRequest request, Long requestorId) {
         T post = getPostOrThrow(id);
+        AuthorityValidator.validateMySelf(post.getAuthor(), requestorId);
         updateEntity(post, request);
     }
 

@@ -46,7 +46,7 @@ public class TetherPostService extends AbstractPostService<
     }
 
     @Override
-    public Page<TetherPostListDto> getBoard(int page) {
+    public Page<TetherPostListDto> getPostListDtos(int page) {
         Pageable pageable = PageRequest.of(page, 20);
         return tetherPostRepository.findList(pageable);
     }
