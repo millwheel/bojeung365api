@@ -1,5 +1,6 @@
 package com.example.bojeung365api.exception.handler;
 
+import com.example.bojeung365api.exception.custom.ConflictException;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
 import com.example.bojeung365api.exception.custom.InvalidAuthorityException;
 import com.example.bojeung365api.exception.custom.UserNotFoundException;
@@ -33,6 +34,13 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(DataNotFoundException.class)
     public ErrorResponse handleNotFoundException(HttpServletRequest req, DataNotFoundException ex) {
         HttpStatus status = HttpStatus.NOT_FOUND;
+        return ErrorResponse.of(status.value(), status.getReasonPhrase(), ex.getLocalizedMessage(), req.getRequestURI());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ConflictException.class)
+    public ErrorResponse handleConflictException(HttpServletRequest req, ConflictException ex) {
+        HttpStatus status = HttpStatus.CONFLICT;
         return ErrorResponse.of(status.value(), status.getReasonPhrase(), ex.getLocalizedMessage(), req.getRequestURI());
     }
 
