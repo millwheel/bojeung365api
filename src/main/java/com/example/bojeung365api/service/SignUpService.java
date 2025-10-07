@@ -19,10 +19,10 @@ public class SignUpService {
     @Transactional
     public void signUp(String username, String rawPassword, String email, String nickname) {
         if (userRepository.existsByUsername(username)) {
-            throw new ConflictException("이미 사용하는 아이디입니다.");
+            throw new ConflictException("이미 사용 중인 아이디입니다.");
         }
         if (userRepository.existsByNickname(nickname)) {
-            throw new ConflictException("이미 사용 중하는 닉네임입니다.");
+            throw new ConflictException("이미 사용 중인 닉네임입니다.");
         }
 
         String encoded = passwordEncoder.encode(rawPassword);
