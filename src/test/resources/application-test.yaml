@@ -14,10 +14,6 @@ spring:
         format_sql: true
         show_sql: false
 
-  output:
-    ansi:
-      enabled: ALWAYS  # 컬러 로그 보기 좋게
-
 logging:
   level:
     org.hibernate.SQL: DEBUG

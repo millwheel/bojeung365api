@@ -12,10 +12,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-  output:
-    ansi:
-      enabled: ALWAYS
-
 logging:
   level:
     org.hibernate.SQL: DEBUG
