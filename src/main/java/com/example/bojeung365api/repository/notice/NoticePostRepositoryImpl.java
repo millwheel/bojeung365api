@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static com.example.bojeung365api.entity.QComment.comment;
+import static com.example.bojeung365api.entity.comment.QComment.comment;
 import static com.example.bojeung365api.entity.post.QNoticePost.noticePost;
 import static com.example.bojeung365api.entity.user.QUser.user;
 
