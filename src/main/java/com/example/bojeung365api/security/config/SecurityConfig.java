@@ -89,8 +89,9 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOriginPatterns(List.of("http://localhost:3000"));
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS","PATCH"));
+        config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         config.setMaxAge(Duration.ofHours(1)); // 프리플라이트 캐시
 
