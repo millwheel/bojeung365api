@@ -5,6 +5,7 @@ import com.example.bojeung365api.dto.user.MeResponse;
 import com.example.bojeung365api.service.MeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ public class MeController {
     private final MeService meService;
 
     @GetMapping
+    @PreAuthorize("hasRole('MEMBER')")
     public MeResponse getMe(Authentication authentication) {
         return meService.getMe(authentication.getName());
     }
