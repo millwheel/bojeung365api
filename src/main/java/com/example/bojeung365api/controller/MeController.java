@@ -20,15 +20,15 @@ public class MeController {
 
     @GetMapping
     @PreAuthorize("hasRole('MEMBER')")
-    public MeResponse getMe(Authentication authentication) {
-        return meService.getMe(authentication.getName());
+    public MeResponse getMe(@AuthenticationPrincipal UserDetails userDetails) {
+        return meService.getMe(userDetails.getUsername());
     }
 
     @PostMapping("/change-password")
     public void changePassword(
-            @AuthenticationPrincipal UserDetails principal,
+            @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody ChangePasswordRequest request
     ) {
-        meService.changePassword(principal.getUsername(), request.currentPassword(), request.newPassword());
+        meService.changePassword(userDetails.getUsername(), request.currentPassword(), request.newPassword());
     }
 }

@@ -2,10 +2,13 @@ package com.example.bojeung365api.entity.post;
 
 import com.example.bojeung365api.dto.post.notice.NoticePostRequest;
 import com.example.bojeung365api.entity.user.User;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Entity
@@ -14,8 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NoticePost extends Post {
 
-    @Column(columnDefinition = "jsonb")
-    private String richBody;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", nullable = false)
+    private JsonNode richBody;
 
     public NoticePost(NoticePostRequest request, User author) {
         super(request.getTitle(), author);
