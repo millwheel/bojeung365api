@@ -12,6 +12,7 @@ public record SignUpRequest(
         @Size(min = 6, max = 72, message = "비밀번호는 6자이상이어야 합니다.")
         String password,
 
+        @NotBlank
         @Email @Size(max = 100)
         String email,
 
