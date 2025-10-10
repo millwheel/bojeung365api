@@ -23,7 +23,7 @@ public class CommentController {
         commentService.createComment(postId, customUserDetails.getUser(), commentRequest);
     }
 
-    @DeleteMapping("/{commentId}")
+    @PutMapping("/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public void updateComment(@PathVariable Long commentId,
                               @AuthenticationPrincipal CustomUserDetails customUserDetails,
