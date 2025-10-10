@@ -24,7 +24,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void updateComment(@PathVariable Long commentId,
                               @AuthenticationPrincipal CustomUserDetails customUserDetails,
                               @RequestBody CommentRequest commentRequest) {
