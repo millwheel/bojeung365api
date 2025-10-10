@@ -2,6 +2,7 @@ package com.example.bojeung365api.security.dto;
 
 import com.example.bojeung365api.entity.user.User;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
+    @Getter
     private final User user;
     private final List<GrantedAuthority> authorities;
 

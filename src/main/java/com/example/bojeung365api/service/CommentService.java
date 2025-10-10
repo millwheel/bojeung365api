@@ -7,6 +7,7 @@ import com.example.bojeung365api.entity.post.Post;
 import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
 import com.example.bojeung365api.repository.CommentRepository;
+import com.example.bojeung365api.repository.PostRepository;
 import com.example.bojeung365api.util.AuthorityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CommentService {
 
+    private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
     public List<CommentResponse> getCommentResponses(Long postId) {
@@ -36,7 +38,8 @@ public class CommentService {
     }
 
     @Transactional
-    public void createComment(Post post, User author, CommentRequest commentRequest) {
+    public void createComment(Long postId, User author, CommentRequest commentRequest) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new DataNotFoundException("post"));
         Comment comment = new Comment(post, author, commentRequest.body());
         commentRepository.save(comment);
     }
