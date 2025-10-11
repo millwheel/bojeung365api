@@ -39,7 +39,7 @@ public class ReviewPostRepositoryImpl implements ReviewPostRepositoryCustom {
                         reviewPost.createdAt,
                         user.nickname,
                         commentCountExpr,
-                        reviewPost.siteName
+                        reviewPost.siteUrl
 
                 ))
                 .from(reviewPost)
