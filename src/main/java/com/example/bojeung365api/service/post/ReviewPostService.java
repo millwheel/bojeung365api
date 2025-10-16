@@ -50,8 +50,8 @@ public class ReviewPostService extends AbstractPostService<
     }
 
     @Override
-    public Page<ReviewPostListDto> getPostListDtos(int page) {
-        Pageable pageable = PageRequest.of(page, 20);
+    public Page<ReviewPostListDto> getPostListDtos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         return reviewPostRepository.findList(pageable);
     }
 

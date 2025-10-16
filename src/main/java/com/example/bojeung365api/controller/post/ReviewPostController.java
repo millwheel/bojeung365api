@@ -21,8 +21,9 @@ public class ReviewPostController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<ReviewPostListDto> board(@RequestParam(defaultValue = "0") int page) {
-        return reviewPostService.getPostListDtos(page);
+    public Page<ReviewPostListDto> board(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(required = false, defaultValue = "20") int size) {
+        return reviewPostService.getPostListDtos(page, size);
     }
 
     @GetMapping("/{id}")

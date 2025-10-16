@@ -46,8 +46,8 @@ public class EventPostService extends AbstractPostService<
     }
 
     @Override
-    public Page<EventPostListDto> getPostListDtos(int page) {
-        Pageable pageable = PageRequest.of(page, 20);
+    public Page<EventPostListDto> getPostListDtos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         return eventPostRepository.findList(pageable);
     }
 

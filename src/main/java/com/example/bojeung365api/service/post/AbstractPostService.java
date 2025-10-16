@@ -41,7 +41,7 @@ public abstract class AbstractPostService<
                 .orElseThrow(() -> new DataNotFoundException(notFoundTarget()));
     }
 
-    public abstract Page<L> getPostListDtos(int page);
+    public abstract Page<L> getPostListDtos(int page, int size);
 
     public R getPostResponse(Long id) {
         T post = getPostOrThrow(id);

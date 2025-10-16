@@ -21,8 +21,9 @@ public class EventPostController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<EventPostListDto> board(@RequestParam(defaultValue = "0") int page) {
-        return eventPostService.getPostListDtos(page);
+    public Page<EventPostListDto> board(@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(required = false, defaultValue = "20") int size) {
+        return eventPostService.getPostListDtos(page, size);
     }
 
     @GetMapping("/{id}")

@@ -46,8 +46,8 @@ public class ScamReportPostService extends AbstractPostService<
     }
 
     @Override
-    public Page<ScamReportPostListDto> getPostListDtos(int page) {
-        Pageable pageable = PageRequest.of(page, 20);
+    public Page<ScamReportPostListDto> getPostListDtos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         return scamReportPostRepository.findList(pageable);
     }
 

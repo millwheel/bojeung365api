@@ -21,8 +21,9 @@ public class NoticePostController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<NoticePostListDto> board(@RequestParam(defaultValue = "0") int page) {
-        return noticePostService.getPostListDtos(page);
+    public Page<NoticePostListDto> board(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(required = false, defaultValue = "20") int size) {
+        return noticePostService.getPostListDtos(page, size);
     }
 
     @GetMapping("/{id}")
