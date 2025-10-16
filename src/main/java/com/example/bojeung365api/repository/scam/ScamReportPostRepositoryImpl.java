@@ -39,7 +39,7 @@ public class ScamReportPostRepositoryImpl implements ScamReportPostRepositoryCus
                         scamReportPost.createdAt,
                         user.nickname,
                         commentCountExpr,
-                        scamReportPost.siteName
+                        scamReportPost.siteUrl
                 ))
                 .from(scamReportPost)
                 .join(scamReportPost.author, user)
