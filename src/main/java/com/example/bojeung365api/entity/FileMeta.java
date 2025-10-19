@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "stored_file")
+@Table(name = "file_meta")
 public class FileMeta extends BaseTimeEntity {
 
     @Id
