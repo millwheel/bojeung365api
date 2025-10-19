@@ -21,8 +21,9 @@ public class TetherPostController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<TetherPostListDto> board(@RequestParam(defaultValue = "0") int page) {
-        return tetherPostService.getPostListDtos(page);
+    public Page<TetherPostListDto> board(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(required = false, defaultValue = "20") int size) {
+        return tetherPostService.getPostListDtos(page, size);
     }
 
     @GetMapping("/{id}")

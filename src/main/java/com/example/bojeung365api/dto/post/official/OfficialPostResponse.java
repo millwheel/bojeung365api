@@ -18,7 +18,6 @@ public class OfficialPostResponse implements PostResponseDto {
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
     private String richBody;
-    private String thumbnailUrl;
 
     public OfficialPostResponse(OfficialPost officialPost, List<CommentResponse> commentResponses) {
         this.id = officialPost.getId();
@@ -29,6 +28,5 @@ public class OfficialPostResponse implements PostResponseDto {
         this.updatedAt = officialPost.getUpdatedAt();
         this.commentResponses = commentResponses;
         this.richBody = officialPost.getRichBody();
-        this.thumbnailUrl = officialPost.getThumbnailUrl();
     }
 }

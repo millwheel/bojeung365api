@@ -15,5 +15,5 @@ public class OfficialPostListDto implements PostListDto {
     private LocalDateTime createdAt;
     private String authorNickname;
     private Integer commentCount;
-    private String thumbnailUrl;
+    private Long fileId;
 }

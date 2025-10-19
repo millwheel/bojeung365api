@@ -17,17 +17,17 @@ public class OfficialPost extends Post {
     @Column(columnDefinition = "jsonb")
     private String richBody;
 
-    private String thumbnailUrl;
+    private Long fileId;
 
     public OfficialPost(OfficialPostRequest request, User author) {
         super(request.getTitle(), author);
         this.richBody = request.getRichBody();
-        this.thumbnailUrl = request.getThumbnailUrl();
+        this.fileId = request.getFileId();
     }
 
     public void update(OfficialPostRequest request) {
         super.update(request.getTitle());
         this.richBody = request.getRichBody();
-        this.thumbnailUrl = request.getThumbnailUrl();
+        this.fileId = request.getFileId();
     }
 }

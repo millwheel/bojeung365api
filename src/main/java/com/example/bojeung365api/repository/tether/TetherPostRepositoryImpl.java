@@ -39,7 +39,7 @@ public class TetherPostRepositoryImpl implements TetherPostRepositoryCustom {
                         tetherPost.createdAt,
                         user.nickname,
                         commentCountExpr,
-                        tetherPost.thumbnailUrl
+                        tetherPost.fileId
                 ))
                 .from(tetherPost)
                 .join(tetherPost.author, user)

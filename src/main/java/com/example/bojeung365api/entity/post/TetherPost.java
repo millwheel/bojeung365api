@@ -18,17 +18,17 @@ public class TetherPost extends Post {
     @Column(columnDefinition = "jsonb")
     private String richBody;
 
-    private String thumbnailUrl;
+    private Long fileId;
 
     public TetherPost(TetherPostRequest request, User author) {
         super(request.getTitle(), author);
         this.richBody = request.getRichBody();
-        this.thumbnailUrl = request.getThumbnailUrl();
+        this.fileId = request.getFileId();
     }
 
     public void update(TetherPostRequest request) {
         super.update(request.getTitle());
         this.richBody = request.getRichBody();
-        this.thumbnailUrl = request.getThumbnailUrl();
+        this.fileId = request.getFileId();
     }
 }

@@ -21,8 +21,9 @@ public class OfficialPostController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<OfficialPostListDto> board(@RequestParam(defaultValue = "0") int page) {
-        return officialPostService.getPostListDtos(page);
+    public Page<OfficialPostListDto> board(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(required = false, defaultValue = "20") int size) {
+        return officialPostService.getPostListDtos(page, size);
     }
 
     @GetMapping("/{id}")

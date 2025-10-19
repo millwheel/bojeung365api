@@ -7,10 +7,14 @@ spring:
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
+
+aws:
+  region: ${AWS_REGION}
+  s3:
+    bucket: ${AWS_S3_BUCKET}
 
 logging:
   level:

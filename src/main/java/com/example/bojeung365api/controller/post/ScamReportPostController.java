@@ -21,8 +21,9 @@ public class ScamReportPostController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<ScamReportPostListDto> board(@RequestParam(defaultValue = "0") int page) {
-        return scamReportPostService.getPostListDtos(page);
+    public Page<ScamReportPostListDto> board(@RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(required = false, defaultValue = "20") int size) {
+        return scamReportPostService.getPostListDtos(page, size);
     }
 
     @GetMapping("/{id}")
