@@ -1,5 +1,6 @@
 package com.example.bojeung365api.dto.post.review;
 
+import com.example.bojeung365api.dto.author.AuthorResponse;
 import com.example.bojeung365api.dto.comment.CommentResponse;
 import com.example.bojeung365api.dto.post.PostResponseDto;
 import com.example.bojeung365api.entity.post.ReviewPost;
@@ -15,7 +16,7 @@ public class ReviewPostResponse implements PostResponseDto {
     private Long id;
     private String title;
     private Long viewCount;
-    private String authorNickname;
+    private AuthorResponse author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
@@ -35,7 +36,7 @@ public class ReviewPostResponse implements PostResponseDto {
         this.id = reviewPost.getId();
         this.title = reviewPost.getTitle();
         this.viewCount = reviewPost.getViewCount();
-        this.authorNickname = reviewPost.getAuthor().getNickname();
+        this.author = new AuthorResponse(reviewPost.getAuthor());
         this.createdAt = reviewPost.getCreatedAt();
         this.updatedAt = reviewPost.getUpdatedAt();
         this.commentResponses = commentResponses;
