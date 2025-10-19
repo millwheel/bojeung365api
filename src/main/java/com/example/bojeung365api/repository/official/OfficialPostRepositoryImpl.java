@@ -39,7 +39,7 @@ public class OfficialPostRepositoryImpl implements OfficialPostRepositoryCustom 
                         officialPost.createdAt,
                         user.nickname,
                         commentCountExpr,
-                        officialPost.thumbnailUrl
+                        officialPost.fileId
                 ))
                 .from(officialPost)
                 .join(officialPost.author, user)

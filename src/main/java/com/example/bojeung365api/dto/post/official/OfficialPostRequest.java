@@ -6,5 +6,5 @@ import lombok.Data;
 public class OfficialPostRequest {
     private String title;
     private String richBody;
-    private String thumbnailUrl;
+    private Long fileId;
 }

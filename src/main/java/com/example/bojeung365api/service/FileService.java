@@ -22,10 +22,6 @@ public class FileService {
     private final AwsS3Service awsS3Service;
     private final FileMetaRepository storedFileRepository;
 
-    public void getFileMeta(){
-
-    }
-
     @Transactional
     public FileMeta uploadAndSave(MultipartFile file, String category) {
         if (file == null || file.isEmpty()) {

@@ -18,7 +18,6 @@ public class TetherPostResponse implements PostResponseDto {
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
     private String richBody;
-    private String thumbnailUrl;
 
     public TetherPostResponse(TetherPost tetherPost, List<CommentResponse> commentResponses) {
         this.id = tetherPost.getId();
@@ -29,6 +28,5 @@ public class TetherPostResponse implements PostResponseDto {
         this.updatedAt = tetherPost.getUpdatedAt();
         this.commentResponses = commentResponses;
         this.richBody = tetherPost.getRichBody();
-        this.thumbnailUrl = tetherPost.getThumbnailUrl();
     }
 }
