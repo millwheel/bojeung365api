@@ -15,7 +15,7 @@ public class StoredFile extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** S3 object key (예: uploads/2025/10/19/uuid.png) */
+    /** S3 object key (예: dir/2025/10/19/uuid.png) */
     @Column(nullable = false, unique = true, length = 1024)
     private String uid;
 
@@ -30,4 +30,12 @@ public class StoredFile extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String bucket;
+
+    public StoredFile(String uid, String originalFilename, String contentType, long contentLength, String bucket) {
+        this.uid = uid;
+        this.originalFilename = originalFilename;
+        this.contentType = contentType;
+        this.contentLength = contentLength;
+        this.bucket = bucket;
+    }
 }
