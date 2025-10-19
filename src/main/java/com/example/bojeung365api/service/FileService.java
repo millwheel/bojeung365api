@@ -1,5 +1,6 @@
 package com.example.bojeung365api.service;
 
+import com.example.bojeung365api.dto.file.FileMetaResponse;
 import com.example.bojeung365api.entity.FileMeta;
 import com.example.bojeung365api.repository.FileMetaRepository;
 import com.example.bojeung365api.util.FileUtils;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -20,7 +22,14 @@ import java.util.UUID;
 public class FileService {
 
     private final AwsS3Service awsS3Service;
-    private final FileMetaRepository storedFileRepository;
+    private final FileMetaRepository fileMetaRepository;
+
+    public List<FileMetaResponse> getFileMetaResponses(List<String> uids) {
+        List<FileMeta> fileMetas = fileMetaRepository.findByUidIn(uids);
+        return fileMetas.stream()
+                .map(FileMetaResponse::new)
+                .toList();
+    }
 
     @Transactional
     public FileMeta uploadAndSave(MultipartFile file, String category) {
@@ -43,7 +52,7 @@ public class FileService {
             throw new RuntimeException("Input Stream 읽기 실패");
         }
         awsS3Service.upload(inputStream, uid, contentType, contentLength);
-        return storedFileRepository.save(fileMeta);
+        return fileMetaRepository.save(fileMeta);
     }
 
     private String buildUid(String category, String ext) {
@@ -56,10 +65,10 @@ public class FileService {
 
     @Transactional
     public void deleteById(Long id) {
-        FileMeta f = storedFileRepository.findById(id)
+        FileMeta fileMeta = fileMetaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("파일을 찾을 수 없습니다. id=" + id));
-        awsS3Service.delete(f.getUid());
-        storedFileRepository.delete(f);
+        awsS3Service.delete(fileMeta.getUid());
+        fileMetaRepository.delete(fileMeta);
     }
 
 }

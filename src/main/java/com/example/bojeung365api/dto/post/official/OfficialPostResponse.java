@@ -1,5 +1,6 @@
 package com.example.bojeung365api.dto.post.official;
 
+import com.example.bojeung365api.dto.author.AuthorResponse;
 import com.example.bojeung365api.dto.comment.CommentResponse;
 import com.example.bojeung365api.dto.post.PostResponseDto;
 import com.example.bojeung365api.entity.post.OfficialPost;
@@ -13,7 +14,7 @@ public class OfficialPostResponse implements PostResponseDto {
     private Long id;
     private String title;
     private Long viewCount;
-    private String authorNickname;
+    private AuthorResponse author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
@@ -23,7 +24,7 @@ public class OfficialPostResponse implements PostResponseDto {
         this.id = officialPost.getId();
         this.title = officialPost.getTitle();
         this.viewCount = officialPost.getViewCount();
-        this.authorNickname = officialPost.getAuthor().getNickname();
+        this.author = new AuthorResponse(officialPost.getAuthor());
         this.createdAt = officialPost.getCreatedAt();
         this.updatedAt = officialPost.getUpdatedAt();
         this.commentResponses = commentResponses;
