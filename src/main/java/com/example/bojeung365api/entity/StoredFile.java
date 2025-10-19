@@ -17,7 +17,7 @@ public class StoredFile extends BaseTimeEntity {
 
     /** S3 object key (예: uploads/2025/10/19/uuid.png) */
     @Column(nullable = false, unique = true, length = 1024)
-    private String objectKey;
+    private String uid;
 
     @Column(nullable = false)
     private String originalFilename;
