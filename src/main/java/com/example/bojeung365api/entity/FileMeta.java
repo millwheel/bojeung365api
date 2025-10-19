@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "stored_file")
-public class StoredFile extends BaseTimeEntity {
+public class FileMeta extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class StoredFile extends BaseTimeEntity {
     @Column(nullable = false)
     private String bucket;
 
-    public StoredFile(String uid, String originalFilename, String contentType, long contentLength, String bucket) {
+    public FileMeta(String uid, String originalFilename, String contentType, long contentLength, String bucket) {
         this.uid = uid;
         this.originalFilename = originalFilename;
         this.contentType = contentType;

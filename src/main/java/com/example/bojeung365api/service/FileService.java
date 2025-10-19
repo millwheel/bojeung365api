@@ -1,7 +1,7 @@
 package com.example.bojeung365api.service;
 
-import com.example.bojeung365api.entity.StoredFile;
-import com.example.bojeung365api.repository.StoredFileRepository;
+import com.example.bojeung365api.entity.FileMeta;
+import com.example.bojeung365api.repository.FileMetaRepository;
 import com.example.bojeung365api.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,13 +16,18 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class FileService {
 
     private final AwsS3Service awsS3Service;
-    private final StoredFileRepository storedFileRepository;
+    private final FileMetaRepository storedFileRepository;
+
+    public void getFileMeta(){
+
+    }
 
     @Transactional
-    public StoredFile uploadAndSave(MultipartFile file, String category) {
+    public FileMeta uploadAndSave(MultipartFile file, String category) {
         if (file == null || file.isEmpty()) {
             throw new RuntimeException("빈 파일은 업로드할 수 없습니다.");
         }
@@ -34,7 +39,7 @@ public class FileService {
         String ext = FileUtils.extractExtension(originalFileName);
         String uid = buildUid(category, ext);
         String bucketName = awsS3Service.getBucketName();
-        StoredFile storedFile = new StoredFile(uid, originalFileName, contentType, contentLength, bucketName);
+        FileMeta fileMeta = new FileMeta(uid, originalFileName, contentType, contentLength, bucketName);
         InputStream inputStream;
         try {
             inputStream = file.getInputStream();
@@ -42,7 +47,7 @@ public class FileService {
             throw new RuntimeException("Input Stream 읽기 실패");
         }
         awsS3Service.upload(inputStream, uid, contentType, contentLength);
-        return storedFileRepository.save(storedFile);
+        return storedFileRepository.save(fileMeta);
     }
 
     private String buildUid(String category, String ext) {
@@ -55,7 +60,7 @@ public class FileService {
 
     @Transactional
     public void deleteById(Long id) {
-        StoredFile f = storedFileRepository.findById(id)
+        FileMeta f = storedFileRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("파일을 찾을 수 없습니다. id=" + id));
         awsS3Service.delete(f.getUid());
         storedFileRepository.delete(f);
