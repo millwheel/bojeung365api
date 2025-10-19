@@ -18,7 +18,7 @@ public class TetherPost extends Post {
     @Column(columnDefinition = "jsonb")
     private String richBody;
 
-    private String fileId;
+    private Long fileId;
 
     public TetherPost(TetherPostRequest request, User author) {
         super(request.getTitle(), author);

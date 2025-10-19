@@ -6,5 +6,5 @@ import lombok.Data;
 public class TetherPostRequest {
     private String title;
     private String richBody;
-    private String fileId;
+    private Long fileId;
 }
