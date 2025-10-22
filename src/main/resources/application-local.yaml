@@ -4,8 +4,6 @@ server:
     session:
       cookie:
         name: JSESSIONID
-        http-only: true
-        secure: false
         same-site: lax
 
 spring:
