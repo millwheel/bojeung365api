@@ -1,10 +1,5 @@
 server:
   port: 8080
-  servlet:
-    session:
-      cookie:
-        name: JSESSIONID
-        same-site: lax
 
 spring:
   datasource:
