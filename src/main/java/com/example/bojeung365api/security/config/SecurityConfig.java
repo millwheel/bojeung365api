@@ -1,10 +1,7 @@
 package com.example.bojeung365api.security.config;
 
 import com.example.bojeung365api.security.filter.RestAuthenticationFilter;
-import com.example.bojeung365api.security.handler.RestAccessDeniedHandler;
-import com.example.bojeung365api.security.handler.RestAuthenticationEntryPoint;
-import com.example.bojeung365api.security.handler.RestAuthenticationFailureHandler;
-import com.example.bojeung365api.security.handler.RestAuthenticationSuccessHandler;
+import com.example.bojeung365api.security.handler.*;
 import com.example.bojeung365api.security.provider.RestAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -44,15 +41,16 @@ public class SecurityConfig {
     private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final RestAccessDeniedHandler restAccessDeniedHandler;
+    private final JwtLogoutHandler jwtLogoutHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(AbstractHttpConfigurer::disable) // TODO 나중에 활성화 판별
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
-                .logout(AbstractHttpConfigurer::disable)
+                .logout(logout -> logout.logoutSuccessHandler(jwtLogoutHandler::logout))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/comments/**").permitAll()
