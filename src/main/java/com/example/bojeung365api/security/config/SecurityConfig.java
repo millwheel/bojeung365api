@@ -1,10 +1,7 @@
 package com.example.bojeung365api.security.config;
 
 import com.example.bojeung365api.security.filter.RestAuthenticationFilter;
-import com.example.bojeung365api.security.handler.RestAccessDeniedHandler;
-import com.example.bojeung365api.security.handler.RestAuthenticationEntryPoint;
-import com.example.bojeung365api.security.handler.RestAuthenticationFailureHandler;
-import com.example.bojeung365api.security.handler.RestAuthenticationSuccessHandler;
+import com.example.bojeung365api.security.handler.*;
 import com.example.bojeung365api.security.provider.RestAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +22,8 @@ import org.springframework.security.web.context.DelegatingSecurityContextReposit
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -49,7 +48,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(AbstractHttpConfigurer::disable) // TODO 나중에 활성화 판별
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
@@ -116,6 +115,12 @@ public class SecurityConfig {
         DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
         handler.setRoleHierarchy(roleHierarchy);
         return handler;
+    }
+
+    @Bean
+    @Profile({"dev", "prod"})
+    public CookieSameSiteSupplier cookieSameSiteSupplier() {
+        return CookieSameSiteSupplier.ofNone();
     }
 
 }
