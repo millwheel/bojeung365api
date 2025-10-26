@@ -1,14 +1,14 @@
 package com.example.bojeung365api.security.filter;
 
 import com.example.bojeung365api.security.dto.LoginRequest;
-import com.example.bojeung365api.security.handler.JwtAuthenticationFailureHandler;
-import com.example.bojeung365api.security.handler.JwtAuthenticationSuccessHandler;
+import com.example.bojeung365api.security.provider.JwtTokenProvider;
+import com.example.bojeung365api.security.provider.RestAuthenticationProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -16,22 +16,21 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.bojeung365api.security.AuthConstant.LOGIN_URL;
 
 @Component
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
+    private final JwtTokenProvider jwtTokenProvider;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final ObjectMapper objectMapper;
-
-    public JwtLoginFilter(AuthenticationManager authenticationManager,
-                          JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler,
-                          JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler) {
+    public JwtLoginFilter(RestAuthenticationProvider restAuthenticationProvider,
+                          JwtTokenProvider jwtTokenProvider) {
         super(LOGIN_URL);
-        this.objectMapper = new ObjectMapper();
-        setAuthenticationManager(authenticationManager);
-        setAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler);
-        setAuthenticationFailureHandler(jwtAuthenticationFailureHandler);
+        this.jwtTokenProvider = jwtTokenProvider;
+        setAuthenticationManager(new ProviderManager(restAuthenticationProvider));
     }
 
     @Override
@@ -48,13 +47,31 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
+                                            FilterChain chain, Authentication authResult) throws IOException {
+        String accessToken = jwtTokenProvider.createAccessToken(authResult);
+        String refreshToken = jwtTokenProvider.createRefreshToken(authResult);
+
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("accessToken", accessToken);
+        tokens.put("refreshToken", refreshToken);
+        tokens.put("tokenType", "Bearer");
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(objectMapper.writeValueAsString(tokens));
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                              AuthenticationException failed) throws IOException, ServletException {
-        getFailureHandler().onAuthenticationFailure(request, response, failed);
+                                              AuthenticationException failed) throws IOException {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Authentication Failed");
+        error.put("message", failed.getMessage());
+
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(objectMapper.writeValueAsString(error));
     }
 }

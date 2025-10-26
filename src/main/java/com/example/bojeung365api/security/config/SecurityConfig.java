@@ -4,8 +4,6 @@ import com.example.bojeung365api.security.filter.JwtAuthenticationFilter;
 import com.example.bojeung365api.security.filter.JwtLoginFilter;
 import com.example.bojeung365api.security.handler.RestAccessDeniedHandler;
 import com.example.bojeung365api.security.handler.RestAuthenticationEntryPoint;
-import com.example.bojeung365api.security.provider.RestAuthenticationProvider;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +12,6 @@ import org.springframework.security.access.expression.method.DefaultMethodSecuri
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,7 +35,6 @@ public class SecurityConfig {
 
     private final JwtLoginFilter jwtLoginFilter;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final RestAuthenticationProvider restAuthenticationProvider;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final RestAccessDeniedHandler restAccessDeniedHandler;
 
@@ -73,16 +68,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        return new ProviderManager(restAuthenticationProvider);
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
     }
 
     @Bean
