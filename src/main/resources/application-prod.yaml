@@ -13,6 +13,8 @@ spring:
       hibernate:
         show_sql: false
         format_sql: false
+
+aws:
+  region: ${AWS_REGION}
   s3:
     bucket: ${AWS_S3_BUCKET}
-    region: ${AWS_REGION}
