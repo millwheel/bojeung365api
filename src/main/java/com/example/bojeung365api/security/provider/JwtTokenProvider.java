@@ -1,5 +1,7 @@
 package com.example.bojeung365api.security.provider;
 
+import com.example.bojeung365api.security.dto.CustomUserDetails;
+import com.example.bojeung365api.security.service.CustomUserDetailService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -35,6 +37,7 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenValidityInSeconds;
 
+    private final CustomUserDetailService customUserDetailService;
     private SecretKey key;
 
     @PostConstruct
@@ -47,12 +50,15 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
+        long userId = getUserId(authentication);
+
         long now = System.currentTimeMillis();
         Date validity = new Date(now + this.accessTokenValidityInSeconds * 1000);
 
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
+                .claim("userId", userId)
                 .setIssuedAt(new Date(now))
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -78,13 +84,10 @@ public class JwtTokenProvider {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("auth").toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+        String username = claims.getSubject();
+        CustomUserDetails customUserDetails = customUserDetailService.loadUserByUsername(username);
 
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(customUserDetails, token, customUserDetails.getAuthorities());
     }
 
     public boolean validateToken(String token) {
@@ -111,7 +114,12 @@ public class JwtTokenProvider {
         }
     }
 
-    public String getUsername(String token) {
-        return parseClaims(token).getSubject();
+    private long getUserId(Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails customUserDetails) {
+            return customUserDetails.getId();
+        }
+        throw new RuntimeException("사용자 정보를 찾을 수 없습니다.");
     }
+
 }
