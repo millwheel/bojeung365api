@@ -123,7 +123,7 @@ public class JwtTokenProvider {
     private long getUserId(Authentication authentication) {
         Object principal = authentication.getPrincipal();
         if (principal instanceof CustomUserDetails customUserDetails) {
-            return customUserDetails.getId();
+            return customUserDetails.getUserId();
         }
         throw new RuntimeException("사용자 정보를 찾을 수 없습니다.");
     }

@@ -38,7 +38,7 @@ public class NoticePostController {
             @Valid @RequestBody NoticePostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        noticePostService.createPage(request, customUserDetails.getId());
+        noticePostService.createPage(request, customUserDetails.getUserId());
     }
 
     @PutMapping("/{id}")
@@ -48,7 +48,7 @@ public class NoticePostController {
             @Valid @RequestBody NoticePostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        noticePostService.updatePage(id, request, customUserDetails.getId());
+        noticePostService.updatePage(id, request, customUserDetails.getUserId());
     }
 
     @DeleteMapping("/{id}")
@@ -57,6 +57,6 @@ public class NoticePostController {
             @PathVariable Long id,
             @AuthenticationPrincipal CustomUserDetails me
     ) {
-        noticePostService.deletePage(id, me.getId());
+        noticePostService.deletePage(id, me.getUserId());
     }
 }

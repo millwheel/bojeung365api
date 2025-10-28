@@ -38,7 +38,7 @@ public class ScamReportPostController {
             @Valid @RequestBody ScamReportPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        scamReportPostService.createPage(request, customUserDetails.getId());
+        scamReportPostService.createPage(request, customUserDetails.getUserId());
     }
 
     @PutMapping("/{id}")
@@ -48,15 +48,15 @@ public class ScamReportPostController {
             @Valid @RequestBody ScamReportPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        scamReportPostService.updatePage(id, request, customUserDetails.getId());
+        scamReportPostService.updatePage(id, request, customUserDetails.getUserId());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails me
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        scamReportPostService.deletePage(id, me.getId());
+        scamReportPostService.deletePage(id, customUserDetails.getUserId());
     }
 }

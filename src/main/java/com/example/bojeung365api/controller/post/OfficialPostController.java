@@ -38,7 +38,7 @@ public class OfficialPostController {
             @Valid @RequestBody OfficialPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        officialPostService.createPage(request, customUserDetails.getId());
+        officialPostService.createPage(request, customUserDetails.getUserId());
     }
 
     @PutMapping("/{id}")
@@ -48,15 +48,15 @@ public class OfficialPostController {
             @Valid @RequestBody OfficialPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        officialPostService.updatePage(id, request, customUserDetails.getId());
+        officialPostService.updatePage(id, request, customUserDetails.getUserId());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails me
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        officialPostService.deletePage(id, me.getId());
+        officialPostService.deletePage(id, customUserDetails.getUserId());
     }
 }

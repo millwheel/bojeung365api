@@ -38,7 +38,7 @@ public class TetherPostController {
             @Valid @RequestBody TetherPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        tetherPostService.createPage(request, customUserDetails.getId());
+        tetherPostService.createPage(request, customUserDetails.getUserId());
     }
 
     @PutMapping("/{id}")
@@ -48,15 +48,15 @@ public class TetherPostController {
             @Valid @RequestBody TetherPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        tetherPostService.updatePage(id, request, customUserDetails.getId());
+        tetherPostService.updatePage(id, request, customUserDetails.getUserId());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails me
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        tetherPostService.deletePage(id, me.getId());
+        tetherPostService.deletePage(id, customUserDetails.getUserId());
     }
 }

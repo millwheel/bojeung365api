@@ -20,7 +20,7 @@ public class CommentController {
     public void createComment(@RequestParam Long postId,
                               @AuthenticationPrincipal CustomUserDetails customUserDetails,
                               @RequestBody CommentRequest commentRequest) {
-        commentService.createComment(postId, customUserDetails.getUser(), commentRequest);
+        commentService.createComment(postId, customUserDetails.getUserId(), commentRequest);
     }
 
     @PutMapping("/{commentId}")
@@ -28,14 +28,14 @@ public class CommentController {
     public void updateComment(@PathVariable Long commentId,
                               @AuthenticationPrincipal CustomUserDetails customUserDetails,
                               @RequestBody CommentRequest commentRequest) {
-        commentService.updateComment(commentId, commentRequest, customUserDetails.getId());
+        commentService.updateComment(commentId, commentRequest, customUserDetails.getUserId());
     }
 
     @DeleteMapping("/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteComment(@PathVariable Long commentId,
                               @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        commentService.deleteComment(commentId, customUserDetails.getId());
+        commentService.deleteComment(commentId, customUserDetails.getUserId());
     }
 
 }

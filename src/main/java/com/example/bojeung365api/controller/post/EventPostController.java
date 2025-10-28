@@ -38,7 +38,7 @@ public class EventPostController {
             @Valid @RequestBody EventPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        eventPostService.createPage(request, customUserDetails.getId());
+        eventPostService.createPage(request, customUserDetails.getUserId());
     }
 
     @PutMapping("/{id}")
@@ -48,15 +48,15 @@ public class EventPostController {
             @Valid @RequestBody EventPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        eventPostService.updatePage(id, request, customUserDetails.getId());
+        eventPostService.updatePage(id, request, customUserDetails.getUserId());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails me
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        eventPostService.deletePage(id, me.getId());
+        eventPostService.deletePage(id, customUserDetails.getUserId());
     }
 }

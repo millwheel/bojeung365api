@@ -38,7 +38,7 @@ public class ReviewPostController {
             @Valid @RequestBody ReviewPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        reviewPostService.createPage(request, customUserDetails.getId());
+        reviewPostService.createPage(request, customUserDetails.getUserId());
     }
 
     @PutMapping("/{id}")
@@ -48,15 +48,15 @@ public class ReviewPostController {
             @Valid @RequestBody ReviewPostRequest request,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        reviewPostService.updatePage(id, request, customUserDetails.getId());
+        reviewPostService.updatePage(id, request, customUserDetails.getUserId());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails me
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        reviewPostService.deletePage(id, me.getId());
+        reviewPostService.deletePage(id, customUserDetails.getUserId());
     }
 }
