@@ -1,7 +1,6 @@
 package com.example.bojeung365api.security.provider;
 
 import com.example.bojeung365api.security.dto.CustomUserDetails;
-import com.example.bojeung365api.security.service.CustomUserDetailService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -12,8 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -21,11 +18,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     @Value("${jwt.secret}")
@@ -37,7 +34,6 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenValidityInSeconds;
 
-    private final CustomUserDetailService customUserDetailService;
     private SecretKey key;
 
     @PostConstruct
@@ -85,9 +81,19 @@ public class JwtTokenProvider {
         }
 
         String username = claims.getSubject();
-        CustomUserDetails customUserDetails = customUserDetailService.loadUserByUsername(username);
+        long userId = claims.get("userId", Number.class).longValue();
 
-        return new UsernamePasswordAuthenticationToken(customUserDetails, token, customUserDetails.getAuthorities());
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get("auth").toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        List<GrantedAuthority> authorityList = authorities.stream()
+                .map(a -> (GrantedAuthority) a)
+                .collect(Collectors.toList());
+
+        CustomUserDetails customUserDetails = new CustomUserDetails(userId, username, "", authorityList);
+        return new UsernamePasswordAuthenticationToken(customUserDetails, token, authorityList);
     }
 
     public boolean validateToken(String token) {

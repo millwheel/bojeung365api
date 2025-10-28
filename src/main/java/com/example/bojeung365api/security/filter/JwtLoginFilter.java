@@ -24,12 +24,14 @@ import static com.example.bojeung365api.security.AuthConstant.LOGIN_URL;
 @Component
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     private final JwtTokenProvider jwtTokenProvider;
+    private final RestAuthenticationProvider restAuthenticationProvider;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public JwtLoginFilter(RestAuthenticationProvider restAuthenticationProvider,
                           JwtTokenProvider jwtTokenProvider) {
         super(LOGIN_URL);
         this.jwtTokenProvider = jwtTokenProvider;
+        this.restAuthenticationProvider = restAuthenticationProvider;
         setAuthenticationManager(new ProviderManager(restAuthenticationProvider));
     }
 
