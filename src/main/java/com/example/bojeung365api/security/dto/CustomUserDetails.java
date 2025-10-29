@@ -15,10 +15,10 @@ public class CustomUserDetails implements UserDetails {
     private final String password;
     private final List<GrantedAuthority> authorities;
 
-    public CustomUserDetails(User user) {
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
+    public CustomUserDetails(String username, String password, List<GrantedAuthority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
     }
 
     @Override

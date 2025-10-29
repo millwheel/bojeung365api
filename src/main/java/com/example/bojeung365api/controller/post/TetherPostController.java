@@ -3,7 +3,6 @@ package com.example.bojeung365api.controller.post;
 import com.example.bojeung365api.dto.post.tether.TetherPostListDto;
 import com.example.bojeung365api.dto.post.tether.TetherPostRequest;
 import com.example.bojeung365api.dto.post.tether.TetherPostResponse;
-import com.example.bojeung365api.security.dto.CustomUserDetails;
 import com.example.bojeung365api.service.post.TetherPostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
