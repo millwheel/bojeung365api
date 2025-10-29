@@ -44,6 +44,7 @@ public class SecurityConfig {
     private final RestAccessDeniedHandler restAccessDeniedHandler;
     private final JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
     private final JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         http

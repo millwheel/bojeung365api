@@ -43,4 +43,29 @@ public class JwtService {
                 .compact();
     }
 
+    public Claims parse(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            log.warn("JWT expired: {}", e.getMessage());
+            throw new JwtException("Token has expired");
+        } catch (UnsupportedJwtException e) {
+            log.warn("Unsupported JWT: {}", e.getMessage());
+            throw new JwtException("Unsupported JWT token");
+        } catch (MalformedJwtException e) {
+            log.warn("Malformed JWT: {}", e.getMessage());
+            throw new JwtException("Malformed JWT token");
+        } catch (SecurityException e) {
+            log.warn("Invalid JWT signature: {}", e.getMessage());
+            throw new JwtException("Invalid JWT signature");
+        } catch (IllegalArgumentException e) {
+            log.warn("Illegal JWT token: {}", e.getMessage());
+            throw new JwtException("Illegal JWT token");
+        }
+    }
+
 }
