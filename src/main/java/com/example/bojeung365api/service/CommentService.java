@@ -6,8 +6,10 @@ import com.example.bojeung365api.entity.comment.Comment;
 import com.example.bojeung365api.entity.post.Post;
 import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
+import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.repository.CommentRepository;
 import com.example.bojeung365api.repository.PostRepository;
+import com.example.bojeung365api.repository.UserRepository;
 import com.example.bojeung365api.util.AuthorityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class CommentService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
     public List<CommentResponse> getCommentResponses(Long postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
@@ -38,16 +41,18 @@ public class CommentService {
     }
 
     @Transactional
-    public void createComment(Long postId, User author, CommentRequest commentRequest) {
+    public void createComment(Long postId, String username, CommentRequest commentRequest) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new DataNotFoundException("post"));
+        User author = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
         Comment comment = new Comment(post, author, commentRequest.body());
         commentRepository.save(comment);
     }
 
     @Transactional
-    public void updateComment(Long commentId, CommentRequest commentRequest, Long requestorId) {
+    public void updateComment(Long commentId, CommentRequest commentRequest, String username) {
         Comment comment = getComment(commentId);
-        AuthorityValidator.validateMySelf(comment.getAuthor(), requestorId);
+        AuthorityValidator.validateMySelf(comment.getAuthor(), username);
         comment.update(commentRequest.body());
     }
 
@@ -57,10 +62,10 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long commentId, Long requestorId) {
+    public void deleteComment(Long commentId, String username) {
         Comment comment = getComment(commentId);
         // TODO 관리자는 열외처리할 것
-        AuthorityValidator.validateMySelf(comment.getAuthor(), requestorId);
+        AuthorityValidator.validateMySelf(comment.getAuthor(), username);
         commentRepository.delete(comment);
     }
 

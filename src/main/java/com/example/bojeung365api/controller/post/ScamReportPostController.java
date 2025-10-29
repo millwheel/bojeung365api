@@ -3,13 +3,13 @@ package com.example.bojeung365api.controller.post;
 import com.example.bojeung365api.dto.post.scam.ScamReportPostListDto;
 import com.example.bojeung365api.dto.post.scam.ScamReportPostRequest;
 import com.example.bojeung365api.dto.post.scam.ScamReportPostResponse;
-import com.example.bojeung365api.security.dto.CustomUserDetails;
 import com.example.bojeung365api.service.post.ScamReportPostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,9 +36,9 @@ public class ScamReportPostController {
     @ResponseStatus(HttpStatus.CREATED)
     public void create(
             @Valid @RequestBody ScamReportPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        scamReportPostService.createPage(request, customUserDetails.getId());
+        scamReportPostService.createPage(request, userDetails.getUsername());
     }
 
     @PutMapping("/{id}")
@@ -46,17 +46,17 @@ public class ScamReportPostController {
     public void update(
             @PathVariable Long id,
             @Valid @RequestBody ScamReportPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        scamReportPostService.updatePage(id, request, customUserDetails.getId());
+        scamReportPostService.updatePage(id, request, userDetails.getUsername());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails me
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        scamReportPostService.deletePage(id, me.getId());
+        scamReportPostService.deletePage(id, userDetails.getUsername());
     }
 }

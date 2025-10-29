@@ -6,6 +6,7 @@ import com.example.bojeung365api.dto.post.PostResponseDto;
 import com.example.bojeung365api.entity.post.Post;
 import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
+import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.repository.UserRepository;
 import com.example.bojeung365api.service.CommentService;
 import com.example.bojeung365api.util.AuthorityValidator;
@@ -51,23 +52,23 @@ public abstract class AbstractPostService<
     }
 
     @Transactional
-    public void createPage(CreateRequest request, Long requestorId) {
-        User author = userRepository.findById(requestorId)
-                .orElseThrow(() -> new DataNotFoundException("user"));
+    public void createPage(CreateRequest request, String username) {
+        User author = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
         repository().save(createEntity(request, author));
     }
 
     @Transactional
-    public void updatePage(Long id, UpdateRequest request, Long requestorId) {
+    public void updatePage(Long id, UpdateRequest request, String username) {
         T post = getPostOrThrow(id);
-        AuthorityValidator.validateMySelf(post.getAuthor(), requestorId);
+        AuthorityValidator.validateMySelf(post.getAuthor(), username);
         updateEntity(post, request);
     }
 
     @Transactional
-    public void deletePage(Long id, Long requestorId) {
+    public void deletePage(Long id, String username) {
         T post = getPostOrThrow(id);
-        AuthorityValidator.validateMySelf(post.getAuthor(), requestorId); // TODO: 관리자 예외 추가
+        AuthorityValidator.validateMySelf(post.getAuthor(), username); // TODO: 관리자 예외 추가
         commentService.deleteCommentsCascade(id);
         repository().delete(post);
     }

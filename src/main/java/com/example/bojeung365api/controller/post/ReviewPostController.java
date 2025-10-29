@@ -3,13 +3,13 @@ package com.example.bojeung365api.controller.post;
 import com.example.bojeung365api.dto.post.review.ReviewPostListDto;
 import com.example.bojeung365api.dto.post.review.ReviewPostRequest;
 import com.example.bojeung365api.dto.post.review.ReviewPostResponse;
-import com.example.bojeung365api.security.dto.CustomUserDetails;
 import com.example.bojeung365api.service.post.ReviewPostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,9 +36,9 @@ public class ReviewPostController {
     @ResponseStatus(HttpStatus.CREATED)
     public void create(
             @Valid @RequestBody ReviewPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        reviewPostService.createPage(request, customUserDetails.getId());
+        reviewPostService.createPage(request, userDetails.getUsername());
     }
 
     @PutMapping("/{id}")
@@ -46,17 +46,17 @@ public class ReviewPostController {
     public void update(
             @PathVariable Long id,
             @Valid @RequestBody ReviewPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        reviewPostService.updatePage(id, request, customUserDetails.getId());
+        reviewPostService.updatePage(id, request, userDetails.getUsername());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails me
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        reviewPostService.deletePage(id, me.getId());
+        reviewPostService.deletePage(id, userDetails.getUsername());
     }
 }

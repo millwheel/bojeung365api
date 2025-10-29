@@ -3,13 +3,13 @@ package com.example.bojeung365api.controller.post;
 import com.example.bojeung365api.dto.post.event.EventPostListDto;
 import com.example.bojeung365api.dto.post.event.EventPostRequest;
 import com.example.bojeung365api.dto.post.event.EventPostResponse;
-import com.example.bojeung365api.security.dto.CustomUserDetails;
 import com.example.bojeung365api.service.post.EventPostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,9 +36,9 @@ public class EventPostController {
     @ResponseStatus(HttpStatus.CREATED)
     public void create(
             @Valid @RequestBody EventPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        eventPostService.createPage(request, customUserDetails.getId());
+        eventPostService.createPage(request, userDetails.getUsername());
     }
 
     @PutMapping("/{id}")
@@ -46,17 +46,17 @@ public class EventPostController {
     public void update(
             @PathVariable Long id,
             @Valid @RequestBody EventPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        eventPostService.updatePage(id, request, customUserDetails.getId());
+        eventPostService.updatePage(id, request, userDetails.getUsername());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails me
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        eventPostService.deletePage(id, me.getId());
+        eventPostService.deletePage(id, userDetails.getUsername());
     }
 }

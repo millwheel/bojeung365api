@@ -1,9 +1,6 @@
 package com.example.bojeung365api.exception.handler;
 
-import com.example.bojeung365api.exception.custom.ConflictException;
-import com.example.bojeung365api.exception.custom.DataNotFoundException;
-import com.example.bojeung365api.exception.custom.InvalidAuthorityException;
-import com.example.bojeung365api.exception.custom.UserNotFoundException;
+import com.example.bojeung365api.exception.custom.*;
 import com.example.bojeung365api.exception.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,6 +35,13 @@ public class ControllerExceptionHandler {
                 .map(e -> e.getKey() + " - " + e.getValue())
                 .collect(Collectors.joining(", "));
         return ErrorResponse.of(status.value(), status.getReasonPhrase(), summary, req.getRequestURI());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidRequestException.class)
+    public ErrorResponse handleInvalidRequestException(HttpServletRequest req, InvalidRequestException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return ErrorResponse.of(status.value(), status.getReasonPhrase(), ex.getLocalizedMessage(), req.getRequestURI());
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

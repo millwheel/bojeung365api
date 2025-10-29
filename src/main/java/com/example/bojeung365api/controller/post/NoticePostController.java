@@ -3,13 +3,13 @@ package com.example.bojeung365api.controller.post;
 import com.example.bojeung365api.dto.post.notice.NoticePostListDto;
 import com.example.bojeung365api.dto.post.notice.NoticePostRequest;
 import com.example.bojeung365api.dto.post.notice.NoticePostResponse;
-import com.example.bojeung365api.security.dto.CustomUserDetails;
 import com.example.bojeung365api.service.post.NoticePostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,9 +36,9 @@ public class NoticePostController {
     @ResponseStatus(HttpStatus.CREATED)
     public void create(
             @Valid @RequestBody NoticePostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        noticePostService.createPage(request, customUserDetails.getId());
+        noticePostService.createPage(request, userDetails.getUsername());
     }
 
     @PutMapping("/{id}")
@@ -46,17 +46,17 @@ public class NoticePostController {
     public void update(
             @PathVariable Long id,
             @Valid @RequestBody NoticePostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        noticePostService.updatePage(id, request, customUserDetails.getId());
+        noticePostService.updatePage(id, request, userDetails.getUsername());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails me
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        noticePostService.deletePage(id, me.getId());
+        noticePostService.deletePage(id, userDetails.getUsername());
     }
 }
