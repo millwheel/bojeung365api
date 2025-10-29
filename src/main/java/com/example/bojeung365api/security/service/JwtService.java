@@ -1,4 +1,4 @@
-package com.example.bojeung365api.security.provider;
+package com.example.bojeung365api.security.service;
 
 
 import io.jsonwebtoken.*;

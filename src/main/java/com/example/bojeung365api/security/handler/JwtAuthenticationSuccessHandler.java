@@ -1,6 +1,6 @@
 package com.example.bojeung365api.security.handler;
 
-import com.example.bojeung365api.security.provider.JwtService;
+import com.example.bojeung365api.security.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
