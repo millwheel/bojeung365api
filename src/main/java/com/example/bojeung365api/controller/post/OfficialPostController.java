@@ -3,13 +3,13 @@ package com.example.bojeung365api.controller.post;
 import com.example.bojeung365api.dto.post.official.OfficialPostListDto;
 import com.example.bojeung365api.dto.post.official.OfficialPostRequest;
 import com.example.bojeung365api.dto.post.official.OfficialPostResponse;
-import com.example.bojeung365api.security.dto.CustomUserDetails;
 import com.example.bojeung365api.service.post.OfficialPostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,9 +36,9 @@ public class OfficialPostController {
     @ResponseStatus(HttpStatus.CREATED)
     public void create(
             @Valid @RequestBody OfficialPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
-    ) {
-        officialPostService.createPage(request, customUserDetails.getUserId());
+            @AuthenticationPrincipal UserDetails userDetails
+            ) {
+        officialPostService.createPage(request, userDetails.getUsername());
     }
 
     @PutMapping("/{id}")
@@ -46,17 +46,17 @@ public class OfficialPostController {
     public void update(
             @PathVariable Long id,
             @Valid @RequestBody OfficialPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        officialPostService.updatePage(id, request, customUserDetails.getUserId());
+        officialPostService.updatePage(id, request, userDetails.getUsername());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        officialPostService.deletePage(id, customUserDetails.getUserId());
+        officialPostService.deletePage(id, userDetails.getUsername());
     }
 }

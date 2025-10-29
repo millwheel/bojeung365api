@@ -1,7 +1,9 @@
 package com.example.bojeung365api.security.dto;
 
+import com.example.bojeung365api.entity.user.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -9,17 +11,14 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
-    @Getter
-    private final Long userId;
     private final String username;
     private final String password;
     private final List<GrantedAuthority> authorities;
 
-    public CustomUserDetails(Long userId, String username, String password, List<GrantedAuthority> authorities) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.authorities = authorities;
+    public CustomUserDetails(User user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
     @Override

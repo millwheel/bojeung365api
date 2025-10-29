@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,9 +37,9 @@ public class TetherPostController {
     @ResponseStatus(HttpStatus.CREATED)
     public void create(
             @Valid @RequestBody TetherPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        tetherPostService.createPage(request, customUserDetails.getUserId());
+        tetherPostService.createPage(request, userDetails.getUsername());
     }
 
     @PutMapping("/{id}")
@@ -46,17 +47,17 @@ public class TetherPostController {
     public void update(
             @PathVariable Long id,
             @Valid @RequestBody TetherPostRequest request,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        tetherPostService.updatePage(id, request, customUserDetails.getUserId());
+        tetherPostService.updatePage(id, request, userDetails.getUsername());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        tetherPostService.deletePage(id, customUserDetails.getUserId());
+        tetherPostService.deletePage(id, userDetails.getUsername());
     }
 }

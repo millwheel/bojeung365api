@@ -1,0 +1,46 @@
+package com.example.bojeung365api.security.provider;
+
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.Date;
+
+@Slf4j
+@Service
+public class JwtService {
+
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @Value("${jwt.access-token-validity-in-seconds}")
+    private long accessTokenValidityInSeconds;
+    private SecretKey key;
+
+    @PostConstruct
+    public void init() {
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public String generateAccessToken(UserDetails principal) {
+        Instant now = Instant.now();
+        return Jwts.builder()
+                .setSubject(principal.getUsername())
+                .claim("roles", principal.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority).toList())
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(now.plusSeconds(accessTokenValidityInSeconds)))
+                .signWith(key)
+                .compact();
+    }
+
+}

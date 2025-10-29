@@ -48,9 +48,9 @@ public class CommentService {
     }
 
     @Transactional
-    public void updateComment(Long commentId, CommentRequest commentRequest, Long requestorId) {
+    public void updateComment(Long commentId, CommentRequest commentRequest, String username) {
         Comment comment = getComment(commentId);
-        AuthorityValidator.validateMySelf(comment.getAuthor(), requestorId);
+        AuthorityValidator.validateMySelf(comment.getAuthor(), username);
         comment.update(commentRequest.body());
     }
 
@@ -60,10 +60,10 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long commentId, Long requestorId) {
+    public void deleteComment(Long commentId, String username) {
         Comment comment = getComment(commentId);
         // TODO 관리자는 열외처리할 것
-        AuthorityValidator.validateMySelf(comment.getAuthor(), requestorId);
+        AuthorityValidator.validateMySelf(comment.getAuthor(), username);
         commentRepository.delete(comment);
     }
 

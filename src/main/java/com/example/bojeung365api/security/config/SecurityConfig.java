@@ -1,6 +1,7 @@
 package com.example.bojeung365api.security.config;
 
 import com.example.bojeung365api.security.filter.JwtAuthenticationFilter;
+import com.example.bojeung365api.security.filter.JwtLoginFilter;
 import com.example.bojeung365api.security.handler.RestAccessDeniedHandler;
 import com.example.bojeung365api.security.handler.RestAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private final JwtLoginFilter jwtLoginFilter;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final RestAccessDeniedHandler restAccessDeniedHandler;
@@ -51,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(restAuthenticationEntryPoint)

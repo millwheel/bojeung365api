@@ -1,6 +1,6 @@
 package com.example.bojeung365api.security.filter;
 
-import com.example.bojeung365api.security.provider.JwtTokenProvider;
+import com.example.bojeung365api.security.provider.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -31,8 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String jwt = resolveToken(request);
 
-        if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
+        if (StringUtils.hasText(jwt) && jwtService.validateToken(jwt)) {
+            Authentication authentication = jwtService.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.debug("Security Context에 '{}' 인증 정보를 저장했습니다.", authentication.getName());
         } else {
