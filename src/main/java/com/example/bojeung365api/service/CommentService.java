@@ -6,6 +6,7 @@ import com.example.bojeung365api.entity.comment.Comment;
 import com.example.bojeung365api.entity.post.Post;
 import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.DataNotFoundException;
+import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.repository.CommentRepository;
 import com.example.bojeung365api.repository.PostRepository;
 import com.example.bojeung365api.repository.UserRepository;
@@ -40,9 +41,10 @@ public class CommentService {
     }
 
     @Transactional
-    public void createComment(Long postId, Long userId, CommentRequest commentRequest) {
+    public void createComment(Long postId, String username, CommentRequest commentRequest) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new DataNotFoundException("post"));
-        User author = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("user"));
+        User author = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
         Comment comment = new Comment(post, author, commentRequest.body());
         commentRepository.save(comment);
     }

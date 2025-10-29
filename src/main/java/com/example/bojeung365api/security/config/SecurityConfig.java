@@ -1,12 +1,8 @@
 package com.example.bojeung365api.security.config;
 
 import com.example.bojeung365api.security.filter.JwtAuthenticationFilter;
-import com.example.bojeung365api.security.filter.JwtLoginFilter;
-import com.example.bojeung365api.security.handler.JwtAuthenticationFailureHandler;
-import com.example.bojeung365api.security.handler.JwtAuthenticationSuccessHandler;
 import com.example.bojeung365api.security.handler.RestAccessDeniedHandler;
 import com.example.bojeung365api.security.handler.RestAuthenticationEntryPoint;
-import com.example.bojeung365api.security.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +11,7 @@ import org.springframework.security.access.expression.method.DefaultMethodSecuri
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -38,15 +32,12 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final CustomUserDetailService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final RestAccessDeniedHandler restAccessDeniedHandler;
-    private final JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
-    private final JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler;
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
@@ -61,10 +52,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(
-                        new JwtLoginFilter(authenticationManager, jwtAuthenticationSuccessHandler, jwtAuthenticationFailureHandler),
-                        UsernamePasswordAuthenticationFilter.class
-                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(restAuthenticationEntryPoint)
@@ -77,13 +64,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
-        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-        return builder.build();
     }
 
     @Bean

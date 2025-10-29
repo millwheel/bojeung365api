@@ -1,7 +1,6 @@
 package com.example.bojeung365api.controller;
 
 import com.example.bojeung365api.dto.comment.CommentRequest;
-import com.example.bojeung365api.security.dto.CustomUserDetails;
 import com.example.bojeung365api.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
