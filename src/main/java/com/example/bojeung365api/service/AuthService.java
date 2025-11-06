@@ -27,7 +27,7 @@ public class AuthService {
         User user = userRepository.findByUsername(loginRequest.username())
                 .orElseThrow(UserNotFoundException::new);
         if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
-            throw new ConflictException("Invalid username or password");
+            throw new ConflictException("잘못된 아이디 또는 비밀번호입니다.");
         }
 
         return jwtService.generateAccessToken(user);
