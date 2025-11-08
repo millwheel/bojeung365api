@@ -18,7 +18,7 @@ import org.hibernate.type.SqlTypes;
 public class NoticePost extends Post {
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb", nullable = false)
+    @Column(columnDefinition = "jsonb")
     private JsonNode richBody;
 
     public NoticePost(NoticePostRequest request, User author) {

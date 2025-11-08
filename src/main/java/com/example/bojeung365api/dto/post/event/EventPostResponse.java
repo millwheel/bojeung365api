@@ -4,6 +4,7 @@ import com.example.bojeung365api.dto.author.AuthorResponse;
 import com.example.bojeung365api.dto.comment.CommentResponse;
 import com.example.bojeung365api.dto.post.PostResponseDto;
 import com.example.bojeung365api.entity.post.EventPost;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ public class EventPostResponse implements PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
-    private String richBody;
+    private JsonNode richBody;
 
     public EventPostResponse(EventPost eventPost, List<CommentResponse> commentResponses) {
         this.id = eventPost.getId();
