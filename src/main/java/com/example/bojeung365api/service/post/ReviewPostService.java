@@ -57,8 +57,8 @@ public class ReviewPostService extends AbstractPostService<
     }
 
     @Override
-    protected ReviewPostResponse toResponse(ReviewPost reviewPost, List<CommentResponse> commentResponses) {
-        return new ReviewPostResponse(reviewPost, commentResponses);
+    protected ReviewPostResponse toResponse(ReviewPost reviewPost, List<CommentResponse> commentResponses, boolean editable) {
+        return new ReviewPostResponse(reviewPost, commentResponses, editable);
     }
 
     @Override

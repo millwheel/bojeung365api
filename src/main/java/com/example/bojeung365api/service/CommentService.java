@@ -52,7 +52,8 @@ public class CommentService {
     @Transactional
     public void updateComment(Long commentId, CommentRequest commentRequest, String username) {
         Comment comment = getComment(commentId);
-        AuthorityValidator.validateMySelf(comment.getAuthor(), username);
+        User requestUser = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        AuthorityValidator.validateEditable(comment.getAuthor(), requestUser);
         comment.update(commentRequest.body());
     }
 
@@ -64,8 +65,8 @@ public class CommentService {
     @Transactional
     public void deleteComment(Long commentId, String username) {
         Comment comment = getComment(commentId);
-        // TODO 관리자는 열외처리할 것
-        AuthorityValidator.validateMySelf(comment.getAuthor(), username);
+        User requestUser = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        AuthorityValidator.validateEditable(comment.getAuthor(), requestUser);
         commentRepository.delete(comment);
     }
 

@@ -28,8 +28,9 @@ public class NoticePostController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public NoticePostResponse detail(@PathVariable Long id) {
-        return noticePostService.getPostResponse(id);
+    public NoticePostResponse detail(@PathVariable Long id,
+                                     @AuthenticationPrincipal UserDetails userDetails) {
+        return noticePostService.getPostResponse(id, userDetails);
     }
 
     @PostMapping

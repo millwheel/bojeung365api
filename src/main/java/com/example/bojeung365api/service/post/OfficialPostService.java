@@ -52,8 +52,8 @@ public class OfficialPostService extends AbstractPostService<
     }
 
     @Override
-    protected OfficialPostResponse toResponse(OfficialPost officialPost, List<CommentResponse> comments) {
-        return new OfficialPostResponse(officialPost, comments);
+    protected OfficialPostResponse toResponse(OfficialPost officialPost, List<CommentResponse> comments, boolean editable) {
+        return new OfficialPostResponse(officialPost, comments, editable);
     }
 
     @Override

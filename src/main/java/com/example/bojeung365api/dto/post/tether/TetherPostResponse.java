@@ -19,8 +19,9 @@ public class TetherPostResponse implements PostResponseDto {
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
     private String richBody;
+    private boolean editable;
 
-    public TetherPostResponse(TetherPost tetherPost, List<CommentResponse> commentResponses) {
+    public TetherPostResponse(TetherPost tetherPost, List<CommentResponse> commentResponses, boolean editable) {
         this.id = tetherPost.getId();
         this.title = tetherPost.getTitle();
         this.viewCount = tetherPost.getViewCount();
@@ -29,5 +30,6 @@ public class TetherPostResponse implements PostResponseDto {
         this.updatedAt = tetherPost.getUpdatedAt();
         this.commentResponses = commentResponses;
         this.richBody = tetherPost.getRichBody();
+        this.editable = editable;
     }
 }

@@ -52,8 +52,8 @@ public class NoticePostService extends AbstractPostService<
     }
 
     @Override
-    protected NoticePostResponse toResponse(NoticePost noticePost, List<CommentResponse> comments) {
-        return new NoticePostResponse(noticePost, comments);
+    protected NoticePostResponse toResponse(NoticePost noticePost, List<CommentResponse> comments, boolean editable) {
+        return new NoticePostResponse(noticePost, comments, editable);
     }
 
     @Override

@@ -28,8 +28,9 @@ public class ScamReportPostController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ScamReportPostResponse detail(@PathVariable Long id) {
-        return scamReportPostService.getPostResponse(id);
+    public ScamReportPostResponse detail(@PathVariable Long id,
+                                         @AuthenticationPrincipal UserDetails userDetails) {
+        return scamReportPostService.getPostResponse(id, userDetails);
     }
 
     @PostMapping

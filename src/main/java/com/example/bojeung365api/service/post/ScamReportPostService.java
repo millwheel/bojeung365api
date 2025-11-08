@@ -55,8 +55,8 @@ public class ScamReportPostService extends AbstractPostService<
     }
 
     @Override
-    protected ScamReportPostResponse toResponse(ScamReportPost scamReportPost, List<CommentResponse> comments) {
-        return new ScamReportPostResponse(scamReportPost, comments);
+    protected ScamReportPostResponse toResponse(ScamReportPost scamReportPost, List<CommentResponse> comments, boolean editable) {
+        return new ScamReportPostResponse(scamReportPost, comments, editable);
     }
 
     @Override

@@ -52,8 +52,8 @@ public class EventPostService extends AbstractPostService<
     }
 
     @Override
-    protected EventPostResponse toResponse(EventPost eventPost, List<CommentResponse> comments) {
-        return new EventPostResponse(eventPost, comments);
+    protected EventPostResponse toResponse(EventPost eventPost, List<CommentResponse> comments, boolean editable) {
+        return new EventPostResponse(eventPost, comments, editable);
     }
 
     @Override

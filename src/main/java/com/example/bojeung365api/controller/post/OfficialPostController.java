@@ -28,8 +28,9 @@ public class OfficialPostController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public OfficialPostResponse detail(@PathVariable Long id) {
-        return officialPostService.getPostResponse(id);
+    public OfficialPostResponse detail(@PathVariable Long id,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
+        return officialPostService.getPostResponse(id, userDetails);
     }
 
     @PostMapping
