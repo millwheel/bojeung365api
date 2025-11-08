@@ -49,10 +49,15 @@ public abstract class AbstractPostService<
 
     public R getPostResponse(Long id, UserDetails userDetails) {
         T post = getPostOrThrow(id);
-        String username = userDetails.getUsername();
-        User requestUser = userRepository.findByUsername(username)
-                .orElseThrow(UserNotFoundException::new);
-        boolean editable = AuthorityValidator.checkEditable(post.getAuthor(), requestUser);
+        boolean editable = false;
+
+        if (userDetails != null) {
+            String username = userDetails.getUsername();
+            User requestUser = userRepository.findByUsername(username)
+                    .orElseThrow(UserNotFoundException::new);
+            editable = AuthorityValidator.checkEditable(post.getAuthor(), requestUser);
+        }
+
         postViewCountService.increaseAsync(post.getId());
         List<CommentResponse> comments = commentService.getCommentResponses(id);
         return toResponse(post, comments, editable);
