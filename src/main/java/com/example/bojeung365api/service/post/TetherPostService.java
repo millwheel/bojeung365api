@@ -56,7 +56,7 @@ public class TetherPostService extends AbstractPostService<
 
     @Override
     protected TetherPostResponse toResponse(TetherPost tetherPost, List<CommentResponse> comments, boolean editable) {
-        return new TetherPostResponse(tetherPost, comments);
+        return new TetherPostResponse(tetherPost, comments, editable);
     }
 
     @Override
