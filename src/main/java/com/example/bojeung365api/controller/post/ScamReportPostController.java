@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/posts/scam-report")
+@RequestMapping("/posts/report")
 public class ScamReportPostController {
 
     private final ScamReportPostService scamReportPostService;
