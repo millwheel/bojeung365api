@@ -5,6 +5,7 @@ import com.example.bojeung365api.entity.user.User;
 import com.example.bojeung365api.exception.custom.ConflictException;
 import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.repository.UserRepository;
+import com.example.bojeung365api.util.RandomUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class MeService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -33,6 +34,20 @@ public class MeService {
 
         String encoded = passwordEncoder.encode(newRawPassword);
         user.updatePassword(encoded);
+    }
+
+    @Transactional
+    public String resetPasswordWithRandom(String username, String email) {
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+
+        if (!user.getEmail().equals(email)) {
+            throw new ConflictException("등록된 이메일과 일치하지 않습니다.");
+        }
+
+        String randomPassword = RandomUtils.generateRandomString(12);
+        String encoded = passwordEncoder.encode(randomPassword);
+        user.updatePassword(encoded);
+        return randomPassword;
     }
 
 }
