@@ -2,6 +2,7 @@ package com.example.bojeung365api.service;
 
 import com.example.bojeung365api.dto.user.MeResponse;
 import com.example.bojeung365api.entity.user.User;
+import com.example.bojeung365api.exception.custom.ConflictException;
 import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class MeService {
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
 
         if (!passwordEncoder.matches(currentRawPassword, user.getPassword())) {
-            throw new IllegalArgumentException("현재 비밀번호가 올바르지 않습니다.");
+            throw new ConflictException("현재 비밀번호가 올바르지 않습니다.");
         }
 
         String encoded = passwordEncoder.encode(newRawPassword);
