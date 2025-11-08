@@ -29,6 +29,8 @@ public abstract class AbstractPostService<
 
     protected final UserRepository userRepository;
     protected final CommentService commentService;
+    protected final PostViewCountService postViewCountService;
+
     protected abstract JpaRepository<T, Long> repository();
 
     protected abstract R toResponse(T post, List<CommentResponse> comments);
@@ -46,7 +48,7 @@ public abstract class AbstractPostService<
 
     public R getPostResponse(Long id) {
         T post = getPostOrThrow(id);
-        post.increaseViewCount();
+        postViewCountService.increaseAsync(post.getId());
         List<CommentResponse> comments = commentService.getCommentResponses(id);
         return toResponse(post, comments);
     }

@@ -30,8 +30,11 @@ public class TetherPostService extends AbstractPostService<
 
     private final TetherPostRepository tetherPostRepository;
 
-    public TetherPostService(UserRepository userRepository, CommentService commentService, TetherPostRepository tetherPostRepository) {
-        super(userRepository, commentService);
+    public TetherPostService(UserRepository userRepository,
+                             CommentService commentService,
+                             PostViewCountService postViewCountService,
+                             TetherPostRepository tetherPostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.tetherPostRepository = tetherPostRepository;
     }
 

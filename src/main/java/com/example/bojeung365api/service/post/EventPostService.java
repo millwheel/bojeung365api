@@ -30,8 +30,8 @@ public class EventPostService extends AbstractPostService<
 
     private final EventPostRepository eventPostRepository;
 
-    public EventPostService(UserRepository userRepository, CommentService commentService, EventPostRepository eventPostRepository) {
-        super(userRepository, commentService);
+    public EventPostService(UserRepository userRepository, CommentService commentService, PostViewCountService postViewCountService, EventPostRepository eventPostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.eventPostRepository = eventPostRepository;
     }
 

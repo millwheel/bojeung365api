@@ -30,8 +30,8 @@ public class NoticePostService extends AbstractPostService<
 
     private final NoticePostRepository noticePostRepository;
 
-    public NoticePostService(UserRepository userRepository, CommentService commentService, NoticePostRepository noticePostRepository) {
-        super(userRepository, commentService);
+    public NoticePostService(UserRepository userRepository, CommentService commentService, PostViewCountService postViewCountService, NoticePostRepository noticePostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.noticePostRepository = noticePostRepository;
     }
 

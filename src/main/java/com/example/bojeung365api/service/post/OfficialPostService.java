@@ -30,8 +30,8 @@ public class OfficialPostService extends AbstractPostService<
 
     private final OfficialPostRepository officialPostRepository;
 
-    public OfficialPostService(UserRepository userRepository, CommentService commentService, OfficialPostRepository officialPostRepository) {
-        super(userRepository, commentService);
+    public OfficialPostService(UserRepository userRepository, CommentService commentService, PostViewCountService postViewCountService, OfficialPostRepository officialPostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.officialPostRepository = officialPostRepository;
     }
 

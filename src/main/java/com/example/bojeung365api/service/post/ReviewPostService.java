@@ -33,9 +33,10 @@ public class ReviewPostService extends AbstractPostService<
     public ReviewPostService(
             UserRepository userRepository,
             CommentService commentService,
+            PostViewCountService postViewCountService,
             ReviewPostRepository reviewPostRepository
     ) {
-        super(userRepository, commentService);
+        super(userRepository, commentService, postViewCountService);
         this.reviewPostRepository = reviewPostRepository;
     }
 

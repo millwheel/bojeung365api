@@ -30,8 +30,11 @@ public class ScamReportPostService extends AbstractPostService<
 
     private final ScamReportPostRepository scamReportPostRepository;
 
-    public ScamReportPostService(UserRepository userRepository, CommentService commentService, ScamReportPostRepository scamReportPostRepository) {
-        super(userRepository, commentService);
+    public ScamReportPostService(UserRepository userRepository,
+                                 CommentService commentService,
+                                 PostViewCountService postViewCountService,
+                                 ScamReportPostRepository scamReportPostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.scamReportPostRepository = scamReportPostRepository;
     }
 
