@@ -5,6 +5,7 @@ import com.example.bojeung365api.entity.FileMeta;
 import com.example.bojeung365api.repository.FileMetaRepository;
 import com.example.bojeung365api.util.FileUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,15 +24,11 @@ public class FileService {
     private final AwsS3Service awsS3Service;
     private final FileMetaRepository fileMetaRepository;
 
-    public List<FileMetaResponse> getFileMetaResponses(List<String> uids) {
-        List<FileMeta> fileMetas = fileMetaRepository.findByUidIn(uids);
-        return fileMetas.stream()
-                .map(FileMetaResponse::new)
-                .toList();
-    }
+    @Value("${aws.region}")
+    private String region;
 
     @Transactional
-    public FileMeta uploadAndSave(MultipartFile file, String category) {
+    public FileMetaResponse uploadAndSave(MultipartFile file, String category) {
         if (file == null || file.isEmpty()) {
             throw new RuntimeException("빈 파일은 업로드할 수 없습니다.");
         }
@@ -52,7 +48,9 @@ public class FileService {
             throw new RuntimeException("Input Stream 읽기 실패");
         }
         awsS3Service.upload(inputStream, uid, contentType, contentLength);
-        return fileMetaRepository.save(fileMeta);
+        fileMetaRepository.save(fileMeta);
+        String publicUrl = makePublicUrl(bucketName, uid);
+        return new FileMetaResponse(fileMeta, publicUrl);
     }
 
     private String buildUid(String category, String ext) {
@@ -61,6 +59,10 @@ public class FileService {
         String uuid = UUID.randomUUID().toString();
         String prefix = (category == null || category.isBlank()) ? "" : category.replaceAll("^/|/$", "") + "/";
         return prefix + datePath + "/" + uuid + ext;
+    }
+
+    private String makePublicUrl(String bucket, String uid) {
+        return String.format("https://%s.s3.%s.amazonaws.com/%s", bucket, region, uid);
     }
 
     @Transactional

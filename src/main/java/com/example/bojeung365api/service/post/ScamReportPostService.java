@@ -30,8 +30,11 @@ public class ScamReportPostService extends AbstractPostService<
 
     private final ScamReportPostRepository scamReportPostRepository;
 
-    public ScamReportPostService(UserRepository userRepository, CommentService commentService, ScamReportPostRepository scamReportPostRepository) {
-        super(userRepository, commentService);
+    public ScamReportPostService(UserRepository userRepository,
+                                 CommentService commentService,
+                                 PostViewCountService postViewCountService,
+                                 ScamReportPostRepository scamReportPostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.scamReportPostRepository = scamReportPostRepository;
     }
 
@@ -52,8 +55,8 @@ public class ScamReportPostService extends AbstractPostService<
     }
 
     @Override
-    protected ScamReportPostResponse toResponse(ScamReportPost scamReportPost, List<CommentResponse> comments) {
-        return new ScamReportPostResponse(scamReportPost, comments);
+    protected ScamReportPostResponse toResponse(ScamReportPost scamReportPost, List<CommentResponse> comments, boolean editable) {
+        return new ScamReportPostResponse(scamReportPost, comments, editable);
     }
 
     @Override

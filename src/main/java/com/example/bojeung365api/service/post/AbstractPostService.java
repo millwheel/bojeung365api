@@ -13,6 +13,7 @@ import com.example.bojeung365api.util.AuthorityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -29,9 +30,11 @@ public abstract class AbstractPostService<
 
     protected final UserRepository userRepository;
     protected final CommentService commentService;
+    protected final PostViewCountService postViewCountService;
+
     protected abstract JpaRepository<T, Long> repository();
 
-    protected abstract R toResponse(T post, List<CommentResponse> comments);
+    protected abstract R toResponse(T post, List<CommentResponse> comments, boolean editable);
 
     protected abstract T createEntity(CreateRequest request, User author);
     protected abstract void updateEntity(T post, UpdateRequest request);
@@ -44,11 +47,20 @@ public abstract class AbstractPostService<
 
     public abstract Page<L> getPostListDtos(int page, int size);
 
-    public R getPostResponse(Long id) {
+    public R getPostResponse(Long id, UserDetails userDetails) {
         T post = getPostOrThrow(id);
-        post.increaseViewCount();
+        boolean editable = false;
+
+        if (userDetails != null) {
+            String username = userDetails.getUsername();
+            User requestUser = userRepository.findByUsername(username)
+                    .orElseThrow(UserNotFoundException::new);
+            editable = AuthorityValidator.checkEditable(post.getAuthor(), requestUser);
+        }
+
+        postViewCountService.increaseAsync(post.getId());
         List<CommentResponse> comments = commentService.getCommentResponses(id);
-        return toResponse(post, comments);
+        return toResponse(post, comments, editable);
     }
 
     @Transactional
@@ -61,14 +73,18 @@ public abstract class AbstractPostService<
     @Transactional
     public void updatePage(Long id, UpdateRequest request, String username) {
         T post = getPostOrThrow(id);
-        AuthorityValidator.validateMySelf(post.getAuthor(), username);
+        User requestUser = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        AuthorityValidator.validateEditable(post.getAuthor(), requestUser);
         updateEntity(post, request);
     }
 
     @Transactional
     public void deletePage(Long id, String username) {
         T post = getPostOrThrow(id);
-        AuthorityValidator.validateMySelf(post.getAuthor(), username); // TODO: 관리자 예외 추가
+        User requestUser = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        AuthorityValidator.validateEditable(post.getAuthor(), requestUser);
         commentService.deleteCommentsCascade(id);
         repository().delete(post);
     }

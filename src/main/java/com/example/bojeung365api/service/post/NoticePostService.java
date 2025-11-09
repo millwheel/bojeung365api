@@ -30,8 +30,8 @@ public class NoticePostService extends AbstractPostService<
 
     private final NoticePostRepository noticePostRepository;
 
-    public NoticePostService(UserRepository userRepository, CommentService commentService, NoticePostRepository noticePostRepository) {
-        super(userRepository, commentService);
+    public NoticePostService(UserRepository userRepository, CommentService commentService, PostViewCountService postViewCountService, NoticePostRepository noticePostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.noticePostRepository = noticePostRepository;
     }
 
@@ -52,8 +52,8 @@ public class NoticePostService extends AbstractPostService<
     }
 
     @Override
-    protected NoticePostResponse toResponse(NoticePost noticePost, List<CommentResponse> comments) {
-        return new NoticePostResponse(noticePost, comments);
+    protected NoticePostResponse toResponse(NoticePost noticePost, List<CommentResponse> comments, boolean editable) {
+        return new NoticePostResponse(noticePost, comments, editable);
     }
 
     @Override

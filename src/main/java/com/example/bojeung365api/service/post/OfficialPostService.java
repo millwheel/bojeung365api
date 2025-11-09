@@ -30,8 +30,8 @@ public class OfficialPostService extends AbstractPostService<
 
     private final OfficialPostRepository officialPostRepository;
 
-    public OfficialPostService(UserRepository userRepository, CommentService commentService, OfficialPostRepository officialPostRepository) {
-        super(userRepository, commentService);
+    public OfficialPostService(UserRepository userRepository, CommentService commentService, PostViewCountService postViewCountService, OfficialPostRepository officialPostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.officialPostRepository = officialPostRepository;
     }
 
@@ -52,8 +52,8 @@ public class OfficialPostService extends AbstractPostService<
     }
 
     @Override
-    protected OfficialPostResponse toResponse(OfficialPost officialPost, List<CommentResponse> comments) {
-        return new OfficialPostResponse(officialPost, comments);
+    protected OfficialPostResponse toResponse(OfficialPost officialPost, List<CommentResponse> comments, boolean editable) {
+        return new OfficialPostResponse(officialPost, comments, editable);
     }
 
     @Override

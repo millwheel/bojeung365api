@@ -30,8 +30,8 @@ public class EventPostService extends AbstractPostService<
 
     private final EventPostRepository eventPostRepository;
 
-    public EventPostService(UserRepository userRepository, CommentService commentService, EventPostRepository eventPostRepository) {
-        super(userRepository, commentService);
+    public EventPostService(UserRepository userRepository, CommentService commentService, PostViewCountService postViewCountService, EventPostRepository eventPostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.eventPostRepository = eventPostRepository;
     }
 
@@ -52,8 +52,8 @@ public class EventPostService extends AbstractPostService<
     }
 
     @Override
-    protected EventPostResponse toResponse(EventPost eventPost, List<CommentResponse> comments) {
-        return new EventPostResponse(eventPost, comments);
+    protected EventPostResponse toResponse(EventPost eventPost, List<CommentResponse> comments, boolean editable) {
+        return new EventPostResponse(eventPost, comments, editable);
     }
 
     @Override

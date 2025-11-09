@@ -14,10 +14,13 @@ public class FileMetaResponse {
 
     private long contentLength;
 
-    public FileMetaResponse(FileMeta fileMeta) {
+    private String publicUrl;
+
+    public FileMetaResponse(FileMeta fileMeta, String publicUrl) {
         this.id = fileMeta.getId();
         this.uid = fileMeta.getUid();
         this.originalFilename = fileMeta.getOriginalFilename();
         this.contentLength = fileMeta.getContentLength();
+        this.publicUrl = publicUrl;
     }
 }

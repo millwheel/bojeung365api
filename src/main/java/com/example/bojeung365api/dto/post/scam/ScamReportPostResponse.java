@@ -25,8 +25,9 @@ public class ScamReportPostResponse implements PostResponseDto {
     private LocalDate victimDate;
     private BigDecimal victimAmount;
     private String body;
+    private boolean editable;
 
-    public ScamReportPostResponse(ScamReportPost scamReportPost, List<CommentResponse> commentResponses) {
+    public ScamReportPostResponse(ScamReportPost scamReportPost, List<CommentResponse> commentResponses, boolean editable) {
         this.id = scamReportPost.getId();
         this.title = scamReportPost.getTitle();
         this.viewCount = scamReportPost.getViewCount();
@@ -39,5 +40,6 @@ public class ScamReportPostResponse implements PostResponseDto {
         this.victimDate = scamReportPost.getVictimDate();
         this.victimAmount = scamReportPost.getVictimAmount();
         this.body = scamReportPost.getBody();
+        this.editable = editable;
     }
 }

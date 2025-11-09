@@ -4,6 +4,7 @@ import com.example.bojeung365api.dto.author.AuthorResponse;
 import com.example.bojeung365api.dto.comment.CommentResponse;
 import com.example.bojeung365api.dto.post.PostResponseDto;
 import com.example.bojeung365api.entity.post.EventPost;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,9 +19,10 @@ public class EventPostResponse implements PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
-    private String richBody;
+    private JsonNode richBody;
+    private boolean editable;
 
-    public EventPostResponse(EventPost eventPost, List<CommentResponse> commentResponses) {
+    public EventPostResponse(EventPost eventPost, List<CommentResponse> commentResponses, boolean editable) {
         this.id = eventPost.getId();
         this.title = eventPost.getTitle();
         this.viewCount = eventPost.getViewCount();
@@ -29,5 +31,6 @@ public class EventPostResponse implements PostResponseDto {
         this.updatedAt = eventPost.getUpdatedAt();
         this.commentResponses = commentResponses;
         this.richBody = eventPost.getRichBody();
+        this.editable = editable;
     }
 }

@@ -28,8 +28,9 @@ public class EventPostController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EventPostResponse detail(@PathVariable Long id) {
-        return eventPostService.getPostResponse(id);
+    public EventPostResponse detail(@PathVariable Long id,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
+        return eventPostService.getPostResponse(id, userDetails);
     }
 
     @PostMapping

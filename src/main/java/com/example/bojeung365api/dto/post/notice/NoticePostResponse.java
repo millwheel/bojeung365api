@@ -20,8 +20,9 @@ public class NoticePostResponse implements PostResponseDto {
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
     private JsonNode richBody;
+    private boolean editable;
 
-    public NoticePostResponse(NoticePost noticePost, List<CommentResponse> commentResponses) {
+    public NoticePostResponse(NoticePost noticePost, List<CommentResponse> commentResponses, boolean editable) {
         this.id = noticePost.getId();
         this.title = noticePost.getTitle();
         this.viewCount = noticePost.getViewCount();
@@ -30,5 +31,6 @@ public class NoticePostResponse implements PostResponseDto {
         this.updatedAt = noticePost.getUpdatedAt();
         this.commentResponses = commentResponses;
         this.richBody = noticePost.getRichBody();
+        this.editable = editable;
     }
 }

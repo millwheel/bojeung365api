@@ -31,8 +31,9 @@ public class ReviewPostResponse implements PostResponseDto {
     private Integer eventRating;
     private Integer reliability;
     private String body;
+    private boolean editable;
 
-    public ReviewPostResponse(ReviewPost reviewPost, List<CommentResponse> commentResponses) {
+    public ReviewPostResponse(ReviewPost reviewPost, List<CommentResponse> commentResponses, boolean editable) {
         this.id = reviewPost.getId();
         this.title = reviewPost.getTitle();
         this.viewCount = reviewPost.getViewCount();
@@ -51,5 +52,6 @@ public class ReviewPostResponse implements PostResponseDto {
         this.eventRating = reviewPost.getEventRating();
         this.reliability = reviewPost.getReliability();
         this.body = reviewPost.getBody();
+        this.editable = editable;
     }
 }

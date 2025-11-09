@@ -33,9 +33,10 @@ public class ReviewPostService extends AbstractPostService<
     public ReviewPostService(
             UserRepository userRepository,
             CommentService commentService,
+            PostViewCountService postViewCountService,
             ReviewPostRepository reviewPostRepository
     ) {
-        super(userRepository, commentService);
+        super(userRepository, commentService, postViewCountService);
         this.reviewPostRepository = reviewPostRepository;
     }
 
@@ -56,8 +57,8 @@ public class ReviewPostService extends AbstractPostService<
     }
 
     @Override
-    protected ReviewPostResponse toResponse(ReviewPost reviewPost, List<CommentResponse> commentResponses) {
-        return new ReviewPostResponse(reviewPost, commentResponses);
+    protected ReviewPostResponse toResponse(ReviewPost reviewPost, List<CommentResponse> commentResponses, boolean editable) {
+        return new ReviewPostResponse(reviewPost, commentResponses, editable);
     }
 
     @Override

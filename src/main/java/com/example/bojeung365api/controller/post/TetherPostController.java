@@ -28,8 +28,9 @@ public class TetherPostController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TetherPostResponse detail(@PathVariable Long id) {
-        return tetherPostService.getPostResponse(id);
+    public TetherPostResponse detail(@PathVariable Long id,
+                                     @AuthenticationPrincipal UserDetails userDetails) {
+        return tetherPostService.getPostResponse(id, userDetails);
     }
 
     @PostMapping

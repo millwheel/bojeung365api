@@ -28,8 +28,9 @@ public class ReviewPostController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ReviewPostResponse detail(@PathVariable Long id) {
-        return reviewPostService.getPostResponse(id);
+    public ReviewPostResponse detail(@PathVariable Long id,
+                                     @AuthenticationPrincipal UserDetails userDetails) {
+        return reviewPostService.getPostResponse(id, userDetails);
     }
 
     @PostMapping

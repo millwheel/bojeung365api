@@ -30,8 +30,11 @@ public class TetherPostService extends AbstractPostService<
 
     private final TetherPostRepository tetherPostRepository;
 
-    public TetherPostService(UserRepository userRepository, CommentService commentService, TetherPostRepository tetherPostRepository) {
-        super(userRepository, commentService);
+    public TetherPostService(UserRepository userRepository,
+                             CommentService commentService,
+                             PostViewCountService postViewCountService,
+                             TetherPostRepository tetherPostRepository) {
+        super(userRepository, commentService, postViewCountService);
         this.tetherPostRepository = tetherPostRepository;
     }
 
@@ -52,8 +55,8 @@ public class TetherPostService extends AbstractPostService<
     }
 
     @Override
-    protected TetherPostResponse toResponse(TetherPost tetherPost, List<CommentResponse> comments) {
-        return new TetherPostResponse(tetherPost, comments);
+    protected TetherPostResponse toResponse(TetherPost tetherPost, List<CommentResponse> comments, boolean editable) {
+        return new TetherPostResponse(tetherPost, comments, editable);
     }
 
     @Override

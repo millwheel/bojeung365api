@@ -19,8 +19,9 @@ public class OfficialPostResponse implements PostResponseDto {
     private LocalDateTime updatedAt;
     private List<CommentResponse> commentResponses;
     private String richBody;
+    private boolean editable;
 
-    public OfficialPostResponse(OfficialPost officialPost, List<CommentResponse> commentResponses) {
+    public OfficialPostResponse(OfficialPost officialPost, List<CommentResponse> commentResponses, boolean editable) {
         this.id = officialPost.getId();
         this.title = officialPost.getTitle();
         this.viewCount = officialPost.getViewCount();
@@ -29,5 +30,6 @@ public class OfficialPostResponse implements PostResponseDto {
         this.updatedAt = officialPost.getUpdatedAt();
         this.commentResponses = commentResponses;
         this.richBody = officialPost.getRichBody();
+        this.editable = editable;
     }
 }
