@@ -59,7 +59,7 @@ public abstract class AbstractPostService<
         }
 
         postViewCountService.increaseAsync(post.getId());
-        List<CommentResponse> comments = commentService.getCommentResponses(id);
+        List<CommentResponse> comments = commentService.getCommentResponses(id, userDetails);
         return toResponse(post, comments, editable);
     }
 

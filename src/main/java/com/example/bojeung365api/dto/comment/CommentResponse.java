@@ -8,15 +8,17 @@ public record CommentResponse(
         Long id,
         String authorNickname,
         String body,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        boolean editable
 ) {
 
-    public CommentResponse(Comment comment) {
+    public CommentResponse(Comment comment, boolean editable) {
         this (
                 comment.getId(),
                 comment.getAuthor().getNickname(),
                 comment.getBody(),
-                comment.getCreatedAt()
+                comment.getCreatedAt(),
+                editable
         );
     }
 }

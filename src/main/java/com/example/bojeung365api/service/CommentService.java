@@ -12,6 +12,7 @@ import com.example.bojeung365api.repository.PostRepository;
 import com.example.bojeung365api.repository.UserRepository;
 import com.example.bojeung365api.util.AuthorityValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +28,14 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    public List<CommentResponse> getCommentResponses(Long postId) {
+    public List<CommentResponse> getCommentResponses(Long postId, UserDetails userDetails) {
         List<Comment> comments = commentRepository.findByPostId(postId);
         return comments.stream()
                 .sorted(Comparator.comparing(Comment::getCreatedAt))
-                .map(CommentResponse::new)
+                .map(comment -> {
+                    boolean editable = comment.getAuthor().getUsername().equals(userDetails.getUsername());
+                    return new CommentResponse(comment, editable);
+                })
                 .toList();
     }
 
