@@ -9,7 +9,7 @@ import com.example.bojeung365api.exception.custom.DataNotFoundException;
 import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.repository.UserRepository;
 import com.example.bojeung365api.service.CommentService;
-import com.example.bojeung365api.util.AuthorityValidator;
+import com.example.bojeung365api.util.AuthorityChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -49,15 +49,7 @@ public abstract class AbstractPostService<
 
     public R getPostResponse(Long id, UserDetails userDetails) {
         T post = getPostOrThrow(id);
-        boolean editable = false;
-
-        if (userDetails != null) {
-            String username = userDetails.getUsername();
-            User requestUser = userRepository.findByUsername(username)
-                    .orElseThrow(UserNotFoundException::new);
-            editable = AuthorityValidator.checkEditable(post.getAuthor(), requestUser);
-        }
-
+        boolean editable = AuthorityChecker.checkEditable(post.getAuthor(), userDetails);
         postViewCountService.increaseAsync(post.getId());
         List<CommentResponse> comments = commentService.getCommentResponses(id, userDetails);
         return toResponse(post, comments, editable);
@@ -75,7 +67,7 @@ public abstract class AbstractPostService<
         T post = getPostOrThrow(id);
         User requestUser = userRepository.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
-        AuthorityValidator.validateEditable(post.getAuthor(), requestUser);
+        AuthorityChecker.validateEditable(post.getAuthor(), requestUser);
         updateEntity(post, request);
     }
 
@@ -84,7 +76,7 @@ public abstract class AbstractPostService<
         T post = getPostOrThrow(id);
         User requestUser = userRepository.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
-        AuthorityValidator.validateEditable(post.getAuthor(), requestUser);
+        AuthorityChecker.validateEditable(post.getAuthor(), requestUser);
         commentService.deleteCommentsCascade(id);
         repository().delete(post);
     }
