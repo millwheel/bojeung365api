@@ -10,8 +10,9 @@ import com.example.bojeung365api.exception.custom.UserNotFoundException;
 import com.example.bojeung365api.repository.CommentRepository;
 import com.example.bojeung365api.repository.PostRepository;
 import com.example.bojeung365api.repository.UserRepository;
-import com.example.bojeung365api.util.AuthorityValidator;
+import com.example.bojeung365api.util.AuthorityChecker;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +28,14 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    public List<CommentResponse> getCommentResponses(Long postId) {
+    public List<CommentResponse> getCommentResponses(Long postId, UserDetails userDetails) {
         List<Comment> comments = commentRepository.findByPostId(postId);
         return comments.stream()
                 .sorted(Comparator.comparing(Comment::getCreatedAt))
-                .map(CommentResponse::new)
+                .map(comment -> {
+                    boolean editable = AuthorityChecker.checkEditable(comment.getAuthor(), userDetails);
+                    return new CommentResponse(comment, editable);
+                })
                 .toList();
     }
 
@@ -53,7 +57,7 @@ public class CommentService {
     public void updateComment(Long commentId, CommentRequest commentRequest, String username) {
         Comment comment = getComment(commentId);
         User requestUser = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-        AuthorityValidator.validateEditable(comment.getAuthor(), requestUser);
+        AuthorityChecker.validateEditable(comment.getAuthor(), requestUser);
         comment.update(commentRequest.body());
     }
 
@@ -66,7 +70,7 @@ public class CommentService {
     public void deleteComment(Long commentId, String username) {
         Comment comment = getComment(commentId);
         User requestUser = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-        AuthorityValidator.validateEditable(comment.getAuthor(), requestUser);
+        AuthorityChecker.validateEditable(comment.getAuthor(), requestUser);
         commentRepository.delete(comment);
     }
 

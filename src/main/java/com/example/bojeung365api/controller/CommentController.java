@@ -1,6 +1,5 @@
 package com.example.bojeung365api.controller;
 
-import com.example.bojeung365api.dto.Result;
 import com.example.bojeung365api.dto.comment.CommentRequest;
 import com.example.bojeung365api.dto.comment.CommentResponse;
 import com.example.bojeung365api.service.CommentService;
@@ -21,10 +20,9 @@ public class CommentController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Result<List<CommentResponse>> getComments(@RequestParam Long postId,
-                                                     @AuthenticationPrincipal UserDetails userDetails) {
-        List<CommentResponse> commentResponses = commentService.getCommentResponses(postId);
-        return new Result<>(commentResponses);
+    public List<CommentResponse> getComments(@RequestParam Long postId,
+                                             @AuthenticationPrincipal UserDetails userDetails) {
+        return commentService.getCommentResponses(postId, userDetails);
     }
 
     @PostMapping
